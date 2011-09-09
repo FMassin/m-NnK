@@ -1,0 +1,12 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+NaiNo-Kami (NNK) is a suite of Matlab and Perl scripts for earthquake waveform clustering from cross-correlation. Seismological exploitations modules are included for 1D and 3D location, 1D and 3D double difference relocation, focal mechanism determination, coda wave interferometry and more to come.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
