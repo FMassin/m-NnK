@@ -1,1 +1,0 @@
-sed -e 's;,; ;g' NRWY.pbo.igs05.csv | sed -e 's;-; ;g' | awk '$1>1970 && $1<2070 && $7 >0 && $8 >0 && $9 >0 {print$0} ' 
