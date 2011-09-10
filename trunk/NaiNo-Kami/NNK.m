@@ -17,7 +17,6 @@ function NNK
 % fred.massin@gmail.com 
 % YVO University of Utah 2010.
 
-lhjf
 
 
 % conn = database('fovpf','pgsql','olvssclr','org.postgresql.Driver','jdbc:postgresql://195.83.188.2') ;

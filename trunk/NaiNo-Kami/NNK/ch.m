@@ -1,5 +1,6 @@
 %CH    change SAC header
 %
+%
 %    Change SAC header variables for 
 %    SAC files read in to matlab with rsac.m
 %    
@@ -16,7 +17,7 @@
 %    KATH=ch(KATH,'STLA',lat,'STLO',lon)
 %
 %    To change the SAC variable KT0 from station SKS to sSKS
-%    for station KATH:
+%    for station KATH (for example):
 %
 %    KATH=ch(KATH,'KT0','sSKS'); 
 %
