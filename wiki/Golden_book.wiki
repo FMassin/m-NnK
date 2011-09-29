@@ -1,0 +1,10 @@
+#labels Featured
+This the NNK golden book 
+
+= Introduction =
+
+Please let a comment to this page to notify yourself as a NNK user. 'Hello!' can be enough but names, instituts and detail about your use of NNK are welcomed ! 
+
+= Details =
+
+My name is Fred Massin, Univ. of Utah, I used NNK for structural modeling of Piton de la Fournaise volcano (La Réunion, France) and for tectonic and volcano-tectonic earthquakes clustering at Yellowstone volcano (Wyoming, US).
