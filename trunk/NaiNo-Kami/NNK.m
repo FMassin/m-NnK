@@ -1,7 +1,7 @@
 function NNK
 
 
-% Detection, picking and clustering of earthquake. test
+% Detection, picking and clustering of earthquake. 
 %
 % Usage : NNK    to launch.
 %         delete catalog_*.mat;NNK;    for re-process all available data
