@@ -1,4 +1,4 @@
-function NNK
+function NNK(setting)
 
 
 % Detection, picking and clustering of earthquake. 
@@ -24,10 +24,16 @@ function NNK
 % close(conn)
 
 
-
-
 %%% Set parameters
-NNK_takeparams ; %
+if exist('setting','var')==0 
+    if exist('settingfilename.mat','file')==2
+        load settingsfilename.mat
+    else
+        disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be use without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
+        setting = input('Settings filename (no spaces):', 's');
+    end
+    eval(settings);% NNK_takeparams ; %
+end
 continu=1;       %
 time0 = clock ;  %
 %%%%%%%%%%%%%%%%%%
