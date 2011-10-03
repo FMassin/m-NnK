@@ -40,7 +40,7 @@ cluster = dates(1,:);
 % date des eruption : eruption
 whos origines cluster eruption
 creations = cluster ; 
-save clusterEQ2008dec.mat creations
+save ../tmp/clusterEQ2008dec.mat creations
 
 eqDivmaxeq = (1:length(origines))/length(origines);
 eqtimeDivmaxtime = (origines-min(origines))'/(max(origines)-min(origines));

@@ -1,6 +1,6 @@
 function plot_WFexist_1(in)
 
-load plot_NNK.mat ;
+load ../tmp/plot_NNK.mat ;
 lesrecord = char(importdata([pathname record]));
 lesstat = char(importdata([pathname stat]));
 lescompo = char(importdata([pathname compo])) ;
@@ -57,7 +57,7 @@ if in==1
    
     set(h(1),'Enable','on')
     
-    save plot_NNK.mat line -append
+    save ../tmp/plot_NNK.mat line -append
     
 elseif in ==2
     coord=round(ginput(1));

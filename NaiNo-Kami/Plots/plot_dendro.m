@@ -1,7 +1,7 @@
 function plot_dendro
 
 global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endratio fieldedit hpp hp butt
-if exist('plot_NNK.mat','file')== 2;    load plot_NNK.mat ;end
+if exist('../tmp/plot_NNK.mat','file')== 2;    load ../tmp/plot_NNK.mat ;end
 if size(clust,1) == 0 ;     plot_dendro_0 ; end
 hpp=[];a=[];
 
@@ -54,7 +54,7 @@ if exist('pathname','var')==1;if ischar(pathname) == 1
         uicontrol('Parent',hp(1),'Style','pushbutton','Units','normalized', ...
             'Position',[3/4 8/20 1/4 2/20], ...
             'String','off','TooltipString','Toogle (resampling on & smothing on)|(resampling on & smothing off)|(resampling off & smothing off)', ...
-            'Callback','load plot_NNK.mat;if length(param)<9;param(9)=0;end;param(9)=param(9)+1;if param(9)==3;param(9)=0;end;save plot_NNK.mat param -append');
+            'Callback','load ../tmp/plot_NNK.mat;if length(param)<9;param(9)=0;end;param(9)=param(9)+1;if param(9)==3;param(9)=0;end;save ../tmp/plot_NNK.mat param -append');
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         uicontrol('Parent',hp(1),'Style','pushbutton','Units','normalized', ...
             'Position',[0 7/20 1/4 1/20], ...
@@ -126,10 +126,10 @@ if exist('pathname','var')==1;if ischar(pathname) == 1
         butt(3)=uicontrol('Parent',hp(1),'Style','pushbutton','Units','normalized', ...
             'Position',[2/4 4/20 1/4 1/20], ...
             'String','U','TooltipString','Disable unique earthquakes', ...
-            'Callback','load membutton.mat;if strcmp(get(butt(3),''String''),''U'')==1;set(butt(3),''String'',''no U'',''TooltipString'',''Enable unique earthquakes'');else;set(butt(3),''String'',''U'',''TooltipString'',''Disable unique earthquakes'');end');
-        save membutton.mat butt
+            'Callback','load ../tmp/membutton.mat;if strcmp(get(butt(3),''String''),''U'')==1;set(butt(3),''String'',''no U'',''TooltipString'',''Enable unique earthquakes'');else;set(butt(3),''String'',''U'',''TooltipString'',''Disable unique earthquakes'');end');
+        save ../tmp/membutton.mat butt
         
-        save plot_NNK.mat fieldedit hp h fieldedit a -append
+        save ../tmp/plot_NNK.mat fieldedit hp h fieldedit a -append
         
 
     else disp('Please choose path before that') ;        

@@ -39,7 +39,7 @@ ax(2) = subplot(10,3,[6:3:30],'parent',hpp(end));
 ax(3) = subplot(10,3,[13:3:30],'parent',hpp(end));
 ax(4) = subplot(10,3,[4:3:10],'parent',hpp(end));
 IND0=IND;
-save IND.mat IND dist order IND0 ax;
+save ../tmp/IND.mat IND dist order IND0 ax;
 
 uicontrol('Parent',hpp(end),'Style','pushbutton',...
     'Units','normalized','Position',[1/30 9/10 12/30 1/10],...

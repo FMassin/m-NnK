@@ -110,7 +110,7 @@ elseif in ==5              % pour une courbe cumulee de cluster
     Y2 = [1:size(clust,1)]; 
     X1 =[];
     X2 =[];
-    load plot_NNK.mat
+    load ../tmp/plot_NNK.mat
     for i=Y1;
         X1 = [X1 min(cell2mat(clust{i}([1 end],3)))];
         X2 = [X2 max(cell2mat(clust{i}([1 end],3)))];
@@ -142,7 +142,7 @@ elseif in ==6              % pour une courbe cumulee de cluster
     YY2 = [1:size(clust,1)]; 
     XX1 =[];
     XX2 =[];
-    load plot_NNK.mat
+    load ../tmp/plot_NNK.mat
     for i=1:size(clust,1);
         XX1 = [XX1  min(cell2mat(clust{i}([1 end],3)))];
         XX2 = [XX2  max(cell2mat(clust{i}([1 end],3)))];

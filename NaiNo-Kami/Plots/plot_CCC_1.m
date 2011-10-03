@@ -1,6 +1,6 @@
 function plot_CCC_1(in)
 
-load plot_NNK.mat ;
+load ../tmp/plot_NNK.mat ;
 amem=a;
         
 if in == 4
@@ -36,7 +36,7 @@ elseif in == 1 | in == 2
     comp = get(fieldedit(3),'Value') ;
 
     load([pathname CCCs]);
-    load('MyColormapsCCC','mycmap')
+    load('../tmp/MyColormapsCCC','mycmap')
 
     one=cell2mat(tmp(:,sta,comp,pha));
     
@@ -75,7 +75,7 @@ elseif in == 1 | in == 2
     
     set(h(1),'Enable','on')
     
-    save plot_NNK.mat sta comp pha -append
+    save ../tmp/plot_NNK.mat sta comp pha -append
 
 elseif in ==3
     coord=ginput(1);

@@ -22,13 +22,13 @@ filter = {4 12 50 'bandpass' 2};
 
 file = [char(clust{round(pickcluster)}{1,1}) '/' char(clust{round(pickcluster)}{1,2}) '.p'] ;
 file2 = [char(clust{round(pickcluster)}{end,1}) '/' char(clust{round(pickcluster)}{end,2}) '.p'] ;
-com= ['/Users/fredmassin/PostDoc_Utah/Processes/NaiNoKami_2/NNK/uuss2NNK.pl ' file ' all all > test.txt'];
+com= ['/Users/fredmassin/PostDoc_Utah/Processes/NaiNoKami_2/NNK/uuss2NNK.pl ' file ' all all > ../tmp/test.txt'];
 system(com);
 %PC 090101122200 066.13 S  090101122200 000.00 C  090101122200 072.00 E  090101122200 118.13 YTP YTP
 %PC 090101125000 089.09 S  090101125000 000.00                                               YLT YLT
 %123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
 %         10        20        30        40        50        60        70        80        90           
-picks = char(importdata('test.txt'));
+picks = char(importdata('../tmp/test.txt'));
 sta = picks(:,93:95);
 picks = picks(:,17:22);
 [val,ind]=sort(str2num(picks),'ascend');

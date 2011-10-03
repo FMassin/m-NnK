@@ -22,9 +22,9 @@ for clst = pickcluster(1:end)
     %if size(clust{clst},1)>2 & clust{clst}{end,3}-clust{clst}{1,3}<=6   % &  clust{clst}{end,3}-clust{clst}{1,3} <= nb
         file = [char(clust{clst}{1,1}) '/' char(clust{clst}{1,2}) '.p'] ;
         file2 = [char(clust{clst}{end,1}) '/' char(clust{clst}{end,2}) '.p'] ;
-        com= ['/Users/fredmassin/PostDoc_Utah/Processes/NaiNoKami_2/NNK/uuss2NNK.pl ' file ' all all > test.txt'];
+        com= ['/Users/fredmassin/PostDoc_Utah/Processes/NaiNoKami_2/NNK/uuss2NNK.pl ' file ' all all > ../tmp/test.txt'];
         system(com);
-        picks = char(importdata('test.txt'));
+        picks = char(importdata('../tmp/test.txt'));
         sta = picks(:,93:95);
         picks = picks(:,17:22);
         [val,ind]=sort(str2num(picks),'ascend');        

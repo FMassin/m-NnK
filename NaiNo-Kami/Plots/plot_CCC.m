@@ -1,7 +1,7 @@
 function plot_CCC(sta,comp,pha)
 
-if exist('plot_NNK.mat','file')== 2
-    load plot_NNK.mat ;
+if exist('../tmp/plot_NNK.mat','file')== 2
+    load ../tmp/plot_NNK.mat ;
 end
 
 if exist('pathname','var')==1;if ischar(pathname) == 1
@@ -81,7 +81,7 @@ if exist('pathname','var')==1;if ischar(pathname) == 1
             'Callback','plot_CCC_1(3)');
 
         
-        save plot_NNK.mat fieldedit hp h fieldedit a -append
+        save ../tmp/plot_NNK.mat fieldedit hp h fieldedit a -append
         
 
     else disp('Please choose path before that') ;        

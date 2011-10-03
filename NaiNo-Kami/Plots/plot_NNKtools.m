@@ -41,8 +41,8 @@ pth(6) = uipushtool(th,'CData',geticon('reloc'),...
     'TooltipString','Check relavite locations',...
     'HandleVisibility','off','ClickedCallback','plot_reloc');  %choix dun cluster et  affichage radiobuttons (trace hyp hypdd fp Mo measures etc) 
 
-if exist('plot_NNK.mat','file')==2
-    save plot_NNK.mat fh hp pth -append
+if exist('../tmp/plot_NNK.mat','file')==2
+    save ../tmp/plot_NNK.mat fh hp pth -append
 else
-    save plot_NNK.mat fh hp pth
+    save ../tmp/plot_NNK.mat fh hp pth
 end

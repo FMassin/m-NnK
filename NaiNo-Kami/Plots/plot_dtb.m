@@ -1,7 +1,7 @@
 function plot_dtb
 
-if exist('plot_NNK.mat','file')== 2
-    load plot_NNK.mat ;
+if exist('../tmp/plot_NNK.mat','file')== 2
+    load ../tmp/plot_NNK.mat ;
 end
 
 if exist('pathname','var')==1;if ischar(pathname) == 1
@@ -55,7 +55,7 @@ if exist('pathname','var')==1;if ischar(pathname) == 1
         
         set(a(1),'Xlabel','Cumulate number of P phase arrival time')
         
-        save plot_NNK.mat hp a -append
+        save ../tmp/plot_NNK.mat hp a -append
     else disp('Please choose path before that') ;        
     end
 else disp('Please choose path before that') ;
