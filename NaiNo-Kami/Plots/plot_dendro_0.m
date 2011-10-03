@@ -2,8 +2,8 @@ function plot_dendro_0
 
         global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endratio
         
-        if exist('plot_NNK.mat','file')== 2;
-            load plot_NNK.mat;
+        if exist('../tmp/plot_NNK.mat','file')== 2;
+            load ../tmp/plot_NNK.mat;
 
             
             if exist(fullfile(pathname,'clust.mat'),'file') ~= 0 %2000

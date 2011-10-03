@@ -3,9 +3,9 @@ function [X,Y,Z,erX,erY,erZ,XX,YY,ZZ,C3,to]=addisolate(lims)
 %,X1,X2,Y1,Y2,Ylat
 X=[];Y=[];Z=[];erX=[];erY=[];erZ=[];XX=[];YY=[];ZZ=[];C3=[];
 
-load membutton.mat;
+load ../tmp/membutton.mat;
 if strcmp(get(butt(3),'String'),'U')==1
-    if exist('plot_NNK.mat','file')== 2;    load plot_NNK.mat ;end
+    if exist('../tmp/plot_NNK.mat','file')== 2;    load ../tmp/plot_NNK.mat ;end
     mem = size(Y,2);
     bornes = [datestr(param(4),'yyyymmddHHMMSS') ; datestr(param(5),'yyyymmddHHMMSS')] ;
     
