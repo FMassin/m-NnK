@@ -30,9 +30,9 @@ backcolor=0.93;
 
 
 if exist('plot_NNK.mat','file')==2
-    save plot_NNK.mat backcolor param bar2 bar1 fh th hp  pth record stat compo CCCs WFS clstind clstevt clstpth Clustered -append
+    save ../tmp/plot_NNK.mat backcolor param bar2 bar1 fh th hp  pth record stat compo CCCs WFS clstind clstevt clstpth Clustered -append
 else
-    save plot_NNK.mat backcolor param bar2 bar1 fh th  hp pth record stat compo CCCs WFS clstind clstevt clstpth Clustered
+    save ../tmp/plot_NNK.mat backcolor param bar2 bar1 fh th  hp pth record stat compo CCCs WFS clstind clstevt clstpth Clustered
 end
 
 

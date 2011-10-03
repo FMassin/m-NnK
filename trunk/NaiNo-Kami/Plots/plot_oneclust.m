@@ -6,7 +6,7 @@ global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endr
 
 IND = 1;
 indsolution = 1 ;
-if exist('IND.mat','file') ~=0; load IND.mat;end
+if exist('IND.mat','file') ~=0; load ../tmp/IND.mat;end
 
     
 if in == 1
@@ -54,7 +54,7 @@ elseif in ==3
 elseif in ==5
     if 27+indsolution < size(clust{order(IND)},2) ;indsolution=indsolution+1;end
 elseif in ==4 % DC
-    load tmpfaulplane.mat
+    load ../tmp/tmpfaulplane.mat
     disp(['You set double couple solution ' num2str(indsolution) ' and fault plan ' redorgreen(3:end) ' for cluster ' num2str(order(IND)) ' (' num2str(indices(order(IND))) '): ' num2str(clust{order(IND)}{1,27+indsolution}(1:3))])
     com = ['echo "' num2str(indsolution) '" > ' clust{order(IND)}{1,27}(1:end-3) 'sol'] ;
     disp(com) ; system(com);
@@ -63,7 +63,7 @@ elseif in ==4 % DC
     copyfile('tmpnodalplane.mat',[clust{order(IND)}{1,27}(1:end-4) '-aux.mat'])
     disp('================================================================')
 elseif in == -4 % DC avec autre fault plane
-    load tmpnodalplane.mat
+    load ../tmp/tmpnodalplane.mat
     disp(['You set double couple solution ' num2str(indsolution) ' and fault plan ' redorgreen(3:end) ' for cluster ' num2str(order(IND)) ' (' num2str(indices(order(IND))) '): ' num2str(clust{order(IND)}{1,27+indsolution}(1:3))])
     com = ['echo "' num2str(indsolution) '" > ' clust{order(IND)}{1,27}(1:end-3) 'sol'] ;
     disp(com) ; system(com);
@@ -101,7 +101,7 @@ elseif in ==10
     system(com);
     system('sh sgm.sh')
 end
-save IND.mat IND IND0 dist order ax indsolution
+save ../tmp/IND.mat IND IND0 dist order ax indsolution
 
 if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
     %get data to plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -202,7 +202,7 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
         [~,~,XYXred,XYXgreen]=drawball(diameter,nanmean(loc{1}(:,1)),nanmean(loc{1}(:,2)),nanmean(loc{1}(:,3)),S,D,R,1,'none',ax(2),[1/kmlon 1/kmlat 1]);
         [XYZ,redorgreen,XYZinv]=get_goodplan(XYXred,XYXgreen,XYZyellow);
         disp(['Fault plane would be the ' upper(redorgreen(4:end)) ])
-        save tmpfaulplane.mat XYZ redorgreen ; XYZ=XYZinv ; redorgreen=[redorgreen '*-1']; save tmpnodalplane.mat XYZ redorgreen ;
+        save ../tmp/tmpfaulplane.mat XYZ redorgreen ; XYZ=XYZinv ; redorgreen=[redorgreen '*-1']; save ../tmp/tmpnodalplane.mat XYZ redorgreen ;
     else
         warning('where is less than 2 NaN hypocenter positions !')
     end
