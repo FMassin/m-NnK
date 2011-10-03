@@ -191,7 +191,7 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
         legend(h,forlege{1},forlege{2},'location','NorthEast')
     end
     hold off
-    daspect([1/kmlon 1/kmlat 1]);axis tight;grid on;box on;plot_goodgeotick(ax(1))
+    daspect([1/kmlon 1/kmlat 1]);axis tight;grid on;box on;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     %isosurf+fp+planes+slip %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -210,7 +210,7 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
     daspect([1/kmlon 1/kmlat 1]);
     set(ax(2),'xlim',get(ax(1),'xlim'),'ylim',get(ax(1),'ylim'),'zlim',get(ax(1),'zlim')); %,'xtick',get(ax(1),'xtick'),'ytick',get(ax(1),'ytick'),'ztick',get(ax(1),'ztick'));
     linkaxes(ax([2 1]),'all') % slip plot and hypo plot same dimensions
-    grid on;box on;plot_goodgeotick(ax(2));
+    grid on;box on;axis tight;plot_goodgeotick(ax(2));plot_goodgeotick(ax(1));
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     %plot general location map %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
