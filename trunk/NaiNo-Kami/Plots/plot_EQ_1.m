@@ -52,7 +52,7 @@ if in==1 | in == 3 | in == 5
     end
     % SET axes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % MAP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    axes(ax(1));    
+    axes(ax(1));  
     ax(1)=usamap(latlim, lonlim);
     states = shaperead('usastatehi','UseGeoCoords', true, 'BoundingBox', [lonlim', latlim']);
     geoshow(ax(1), states, 'FaceColor', 'none')

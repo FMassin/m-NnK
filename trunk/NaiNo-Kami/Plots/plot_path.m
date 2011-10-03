@@ -3,8 +3,10 @@ function plot_path
 start_path=[pwd '/'];
 if exist('../tmp/plot_NNK.mat','file')== 2
     load ../tmp/plot_NNK.mat ; 
-    if ischar(pathname) == 1
-        start_path=pathname ;
+    if exist('pathname','var') == 1
+        if ischar(pathname) == 1
+            start_path=pathname ;
+        end
     end
 end
 

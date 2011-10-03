@@ -2,8 +2,8 @@ function [time,res,lims] = taketime
 
 global fieldedit
 
-if exist('plot_NNK.mat','file') == 2
-    load plot_NNK.mat
+if exist('../tmp/plot_NNK.mat','file') == 2
+    load ../tmp/plot_NNK.mat
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 lesres = [6 8 10 12 14 16 18 20 22 24 ];
@@ -42,11 +42,11 @@ param(7) = datenum(entereddate(1:17),'yy/mm/dd HH:MM:SS')+(increment*multi);
 
 time = param(4:7) ; %datestr(param(4:7))
 
-save plot_NNK.mat param  -append
+save ../tmp/plot_NNK.mat param  -append
 
 for i=1:length(fieldedit)
     if fieldedit(i) >0
         strings{i} = get(fieldedit(i),'string');
     end
 end
-save strings.mat strings
+save ../tmp/strings.mat strings

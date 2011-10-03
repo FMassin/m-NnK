@@ -1,6 +1,6 @@
 function [clust,oldclust,limx,ind]=takeclust(oldclust)
 
-if exist('plot_NNK.mat','file')== 2;    load plot_NNK.mat ;end
+if exist('../tmp/plot_NNK.mat','file')== 2;    load ../tmp/plot_NNK.mat ;end
 ind = [];
 started = [] ;
 ended = [] ;

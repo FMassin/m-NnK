@@ -129,7 +129,7 @@ if exist('pathname','var')==1;if ischar(pathname) == 1
             'Callback','load ../tmp/membutton.mat;if strcmp(get(butt(3),''String''),''U'')==1;set(butt(3),''String'',''no U'',''TooltipString'',''Enable unique earthquakes'');else;set(butt(3),''String'',''U'',''TooltipString'',''Disable unique earthquakes'');end');
         save ../tmp/membutton.mat butt
         
-        save ../tmp/plot_NNK.mat fieldedit hp h fieldedit a -append
+        save ../tmp/plot_NNK.mat fieldedit hp th fieldedit a -append
         
 
     else disp('Please choose path before that') ;        
