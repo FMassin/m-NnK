@@ -8,4 +8,10 @@ for i=1:a;
 end;
 comm=['col=[' comm(2:end) '];'];
 eval(comm);
-if exist('lim','var')==1;col(lim+1:a)=0;end
+if exist('lim','var')==1;
+    if length(lim)==1
+        col(lim+1:a)=0;
+    elseif length(lim)==length(col)
+        col(logical(lim))=0;
+    end
+end
