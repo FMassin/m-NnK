@@ -14,8 +14,8 @@ function [path2clusters] = NNK_clust
 
 %%% Set parameters
 if exist('setting','var')==0 
-    if exist('settingfilename.mat','file')==2
-        load settingsfilename.mat
+    if exist('settingsfilename.mat','file')==2
+        load  settingsfilename.mat
     else
         disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be used without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
         setting = input('Settings filename (no spaces):', 's');        
