@@ -46,7 +46,7 @@ for i=1:size(Y1in,2)
     end
     
     whos Y1  X1
-    load plot_NNK.mat
+    load ../tmp/plot_NNK.mat
     if length(param) >=9
         if param(9) == 1
             if exist('Y1','var')==1;ts=timeseries( Y1 , X1 ) ; res_ts=resample(ts,resampletime,meth); X1 =resampletime; Y1 =reshape(res_ts.data,1,n);end

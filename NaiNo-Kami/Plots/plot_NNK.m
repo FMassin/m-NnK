@@ -29,7 +29,7 @@ backcolor=0.93;
 [th,hp,pth]=plot_NNKtools(fh,backcolor,bar1);
 
 
-if exist('plot_NNK.mat','file')==2
+if exist('../tmp/plot_NNK.mat','file')==2
     save ../tmp/plot_NNK.mat backcolor param bar2 bar1 fh th hp  pth record stat compo CCCs WFS clstind clstevt clstpth Clustered -append
 else
     save ../tmp/plot_NNK.mat backcolor param bar2 bar1 fh th  hp pth record stat compo CCCs WFS clstind clstevt clstpth Clustered
@@ -41,3 +41,6 @@ end
 
 
 if nargout > 0, fig = h0; end
+
+
+please

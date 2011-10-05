@@ -9,6 +9,37 @@ if numel(indeq)>0
     [~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,clust] = filtclust(clust,indeq,lims);
     [~,~,~,~,~,~,~,~,~,~,dates2] = addisolate(lims);
     dates2=sort(dates2);
+    flagload=1;
+    save ../tmp/plot_NNK.mat flagload -append
+else
+    load ../tmp/plot_NNK.mat ;
+    if exist('flagload','var')==1 
+        if flagload ==1 & exist([pathname 'lst.tmp'],'file') ~= 0
+            disp('Loading the cumulate seismicity ...')
+            lst = char(importdata([pathname 'lst.tmp']));
+            dates1=datenum(lst(:,end-15:end-2),'yyyymmddHHMMSS');
+            cumnums = 1:length(dates1) ;
+            disp('cumulate seismicity is loaded in arrays "dates1" and "cumnums"')
+            
+            disp('Loading the clustering ratios ...')
+            lst = importdata([pathname 'total-vs-clustered.tmp']);
+            dates2 = char(lst.textdata) ;
+            dates2 = datenum(dates2(:,end-15:end-2),'yyyymmddHHMMSS');
+            
+            nums = lst.data ;
+            for i=1:size(dates2,1)
+                %inds = [max([i-500 1]) : i] ;
+                inds = [1 : i] ;
+                clustratio(i) = sum(nums(inds,2));%/length(inds);
+                uniqratio(i) = sum(nums(inds,1));%/length(inds);
+                neoratio(i) = sum(nums(inds,3));%/sum(nums(inds,2));
+                endratio(i) = sum(nums(inds,4));%/sum(nums(inds,2));
+            end
+            disp('clustering ratios are loaded ')
+            flagload =0 ;
+            save ../tmp/plot_NNK.mat flagload -append
+        end
+    end
 end
 
 

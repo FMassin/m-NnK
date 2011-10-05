@@ -39,6 +39,8 @@ function plot_dendro_0
                     neoratio(i) = sum(nums(inds,3));%/sum(nums(inds,2));
                     endratio(i) = sum(nums(inds,4));%/sum(nums(inds,2));
                 end
+                flagload =0 ;
+                save ../tmp/plot_NNK.mat flagload -append
                 disp('clustering ratios are loaded ')
             else
                 disp('no clustering ratio loaded (file lst.tmp and total-vs-clustered.tmp)') ;
