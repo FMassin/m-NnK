@@ -12,16 +12,27 @@ function [path2clusters] = NNK_clust
 
 
 
-%%% Charge les parametres
-NNK_takeparams ;        %
-load NNK_params         %
-%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Set parameters
+if exist('setting','var')==0 
+    if exist('settingfilename.mat','file')==2
+        load settingsfilename.mat
+    else
+        disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be used without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
+        setting = input('Settings filename (no spaces):', 's');        
+    end
+end
+save settingsfilename.mat setting
+eval(setting);     % NNK_takeparams ; %
+load NNK_params.mat%
+%%%%%%%%%%%%%%%%%%%%
 clear B A pathtoNNKdtec
 nbmast = 0;
 
+
+
 %%% Reading %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [Strwfs,Strdataless,lesrecord,memKEVNM,memKNETWK,lesstat,lescompo]=NNK_getwf;
-save([pathtotmp '/clstwf.mat'],'pathtotmp','secutim','fen','Strwfs','lesrecord','seuilcluster','ncorrel','nbmast');
+save([pathtotmp '/clstwf.mat'],'pathtotmp','secutim','fen','Strwfs','Strdataless','lesrecord','seuilcluster','ncorrel');%,'nbmast'
 
 %%% Cross correlate %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %load([pathtotmp '/clstwf.mat'])
@@ -36,8 +47,8 @@ clear Strwfs
 save([pathtotmp '/clstCC.mat'],'links','nelt','a','lesrecord','nbmast') ;
 
 %%% Clustering %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load([pathtotmp '/clstCC.mat']);
-[listeclusters] = NNK_clust_cluster(links,nelt,lesrecord,nbmast)
+%load([pathtotmp '/clstCC.mat']);
+[listeclusters] = NNK_clust_cluster(links,nelt,lesrecord) ;
 save([pathtotmp '/clstClust.mat'],'listeclusters','path2dtb','stamaitre','sacextension','netcode') ;
 clear CCC lesrecord seuilcluster nbmast
 
