@@ -13,7 +13,7 @@ if strcmp(get(butt(3),'String'),'U')==1
     if isnan(lims(1,2)) == 1 ; lims(1,2)=360;end
     if isnan(lims(2,2)) == 1 ; lims(2,2)=360;end
     if isnan(lims(2,1)) == 1 ; lims(2,1)=-360;end
-    if isnan(lims(3,1)) == 1 ; lims(3,1)=-3.5;end
+    if isnan(lims(3,1)) == 1 ; lims(3,1)=-360;end
     if isnan(lims(3,2)) == 1 ; lims(3,2)=360;end
     
      
