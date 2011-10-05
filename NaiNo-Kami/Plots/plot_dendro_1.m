@@ -9,6 +9,15 @@ if numel(indeq)>0
     [~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,clust] = filtclust(clust,indeq,lims);
     [~,~,~,~,~,~,~,~,~,~,dates2] = addisolate(lims);
     dates2=sort(dates2);
+    
+    fortest = [1:size(clust,1)];
+    originclust=[];
+    %limx=[999999999999 0];
+    for i=fortest;
+        originclust = [originclust ; cell2mat(clust{i}(:,3))];
+    end
+    dates1=sort([dates2 ; originclust]);
+    
     flagload=1;
     save ../tmp/plot_NNK.mat flagload -append
 else
