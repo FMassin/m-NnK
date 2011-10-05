@@ -29,11 +29,13 @@ if exist('setting','var')==0
     if exist('settingfilename.mat','file')==2
         load settingsfilename.mat
     else
-        disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be use without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
-        setting = input('Settings filename (no spaces):', 's');
+        disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be used without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
+        setting = input('Settings filename (no spaces):', 's');        
     end
-    eval(settings);% NNK_takeparams ; %
 end
+save settingsfilename.mat setting
+eval(setting);     % NNK_takeparams ; %
+load NNK_params.mat%
 continu=1;       %
 time0 = clock ;  %
 %%%%%%%%%%%%%%%%%%
