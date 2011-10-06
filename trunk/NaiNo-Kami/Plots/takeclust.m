@@ -108,6 +108,8 @@ for i=ids
     end
 end
 disp([num2str(length(ind)) ' clusters selected'])
+if length(ind)==0; disp('FIX: Enlarge time window');end
+
 order = 1:length(ind);
 if length(param) >= 8
     if param(8) == 1
