@@ -1,6 +1,6 @@
-function [P,S,C,E]=NNK_getpick(out,pickimportcomand,file,sta,zero1,DELTA)
+function [KSTA,KEVNT,P,S,C,E,mP,mS,mC,mE]=NNK_getpick(out,pickimportcomand,file,sta,zero1,DELTA)
 
-
+KSTA='';KEVNT='';
 P = [] ; S = [] ; C = []; E = [];
 if exist('DELTA','var')~=1;[DELTA]=lh(out,'DELTA');end
 if exist('zero1','var')~=1
@@ -20,7 +20,7 @@ if aC>0;C=aC;end
 
 if exist('pickimportcomand','var')==1 & exist('file','var')==1 & exist('sta','var')==1
     % First points of ... manual picks %%%%  (*1-PREFERED)
-    [mP,mS,mC,mE] = NNK_getmanualpick(pickimportcomand,file,sta) ;
+    [KSTA,KEVNT,mP,mS,mC,mE,amP,amS,amC] = NNK_getmanualpick(pickimportcomand,file,sta); 
     if mP>0;P=fix((mP-zero1)*(indtoday));end
     if mS>0;S=fix((mS-zero1)*(indtoday));end
     if mC>0;C=fix((mC-zero1)*(indtoday));end

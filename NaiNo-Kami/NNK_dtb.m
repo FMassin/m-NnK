@@ -1,4 +1,4 @@
-function NNK_dtb
+function NNK_dtb(dtbliste)
 
 % Module principale d'operation sur les clusters.
 %
@@ -12,50 +12,79 @@ function NNK_dtb
 
 
 
-%%% Charge les parametres
-NNK_takeparams ;        %
-load NNK_params         %
-%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Set parameters
+if exist('setting','var')==0 
+    if exist('settingsfilename.mat','file')==2
+        load  settingsfilename.mat
+    else
+        disp('Please tell me the setting file name you want to use...\n by the way, next time you launch a NNK commande the same filename will be used without asking.\n Change the settings filename by specification in NNK commande (ex: NNK(''this-file-is-my-new-settings-file.m'') ')
+        setting = input('Settings filename (no spaces):', 's');        
+    end
+end
+save settingsfilename.mat setting
+eval(setting);     % NNK_takeparams ; %
+load NNK_params.mat%
+%%%%%%%%%%%%%%%%%%%%
 
 clc ; NNK_disp_end(0,0) ;
 time0 = clock ;
 
-%%% Update cluster database catalog %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-system(['./NNK/NNK_dendro_1.pl ' path2dtb '/clst tmp/']);
-dtbliste = char(importdata('tmp/tmp7.txt'));
+if exist('dtbliste','var')==0
+    %%% Update cluster database catalog %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    system(['./NNK/NNK_dendro_1.pl ' path2dtb '/clst tmp/']);
+    dtbliste = char(importdata('tmp/tmp7.txt'));
+end
 
-for i=1:size(dtbliste,1)%1:size(dtbliste,1)
+
+for i=1:size(dtbliste,1) %52
     %%% Prepare %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     path2clst=dtbliste(i,1:length(path2dtb)+33);
-    system(['mkdir -p ' path2clst '/tmp']);
-    system(['mkdir -p ' path2clst '/interf']);
-    system(['mkdir -p ' path2clst '/stacks']);
-    system(['mkdir -p ' path2clst '/values']);
-    system(['mkdir -p ' path2clst '/source']);
+    system(['mkdir -p ' fullfile(path2clst,'tmp')]);
+    system(['mkdir -p ' fullfile(path2clst,'interf')]);
+    system(['mkdir -p ' fullfile(path2clst,'stacks')]);
+    system(['rm -r ' fullfile(path2clst,'stacks/*')]);
+    system(['mkdir -p ' fullfile(path2clst,'values')]);
+    system(['mkdir -p ' fullfile(path2clst,'source')]);
    
-    %%% Reading %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [Strwfs,Strdataless,lesrecord,memKEVNM,memKNETWK,lesstat,lescompo]=NNK_getwf({[path2clst '/events/' ; '*' ; '*' ; 'Z' ; 'PS' ]});
-    save([path2clst '/tmp/dtbwf.mat'],'pathtotmp','secutim','fen','Strwfs','lesrecord','seuilcluster','ncorrel','nbmast');
+    %%% Reading %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    [Strwfs,Strdataless,lesrecord,memKEVNM,memKNETWK,lesstat,lescompo,mempha]=NNK_getwf({[path2clst '/events']; '*' ; '*' ; '*' ; 'PSE'});
+    save([path2clst '/tmp/dtbwf.mat'],'pathtotmp','secutim','fen','Strwfs','lesrecord','seuilcluster','ncorrel');
 
     %%% Cross correlate %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % load([path2clst '/tmp/dtbwf.mat'])
-    [CCC,TS,Strwfs] = NNK_clust_corr([secutim+fen secutim+fen],Strwfs,2) ;
-    save([path2clst '/tmp/dtbCCC.mat'],'CCC','TS','Strwfs','fen','secutim','codafen','lesrecord','seuilcluster','ncorrel')
+    [CCC,TS,Strwfs,Strdataless] = NNK_clust_corr([secutim+fen secutim+codafen],Strwfs,2,mempha,Strdataless) ;
+    save([path2clst '/tmp/dtbCCC.mat'],'CCC','TS','Strwfs','Strdataless','fen','secutim','codafen','lesrecord','seuilcluster','ncorrel')
+
+    %%%% enrich data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     load([path2clst '/tmp/dtbCCC.mat'])
+    [Strwfs,Strdataless] = NNK_enrich(Strwfs,Strdataless);
+    save([path2clst '/tmp/dtbCCCenriched.mat'],'CCC','TS','Strwfs','Strdataless','fen','secutim','codafen','lesrecord','seuilcluster','ncorrel')
+
+    %%% write Stacked and alligned %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % load([path2clst '/tmp/dtbCCCenriched.mat'])
+    % load([path2clst '/tmp/dtbCCC.mat'])
+    [filesstacks] = NNK_wsac(Strwfs(end,:,:,:,:),Strdataless(end,:,:,:,:),fullfile(path2clst,'stacks'),fullfile(path2dtb,'stat'),[sacextension '.stack'],'',formatinp,mycomputer) ;
+    [files] = NNK_wsac(Strwfs(1:end-1,:,:,:,find(mempha=='E')),Strdataless(1:end-1,:,:,:,find(mempha=='E')),fullfile(path2clst,'events'),fullfile(path2dtb,'stat'),[sacextension '.alligned'],'',formatinp,mycomputer) ;
+
+    %%% Use stacked as master wf %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    system(['./NNK/NNK_stack2master.pl "' path2clst '" ']);
     
+    %%% enrich pick file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    enrichinp([path2clst '/events/*'],'*WY.inp','unix');
+
     %%% Interfers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % load([path2clst '/tmp/dtbCCC.mat'])
     %[interf] = NNK_clust_interf([secutim+fen secutim+fen],Strwfs) ;
     %save([path2clst '/tmp/dtbntfm.mat'],'interf','fen','secutim','codafen','lesrecord','seuilcluster','ncorrel')
-    
-    %%% Stacks %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % load([path2clst '/tmp/dtbCCC.mat'])
-    %[Stacks] = NNK_clust_stack([secutim+fen secutim+codafen],Strwfs) ;
-    %save([path2clst '/tmp/dtbstcks.mat'],'Stacks','fen','secutim','codafen','lesrecord','seuilcluster','ncorrel')
-    
+
+    disp(['Cluster ' path2clst ' done'])
 end
 
 %%% Pretty ending %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clc ; NNK_disp_end(1,time0) ;
+%clc ; NNK_disp_end(1,time0) ;
+
+
+
 
 
 

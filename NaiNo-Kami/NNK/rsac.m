@@ -47,22 +47,22 @@ for nrecs = 1:nargin
 
         if strcmp(endian,'big-endian')
             fid = fopen(sacfile,'r','ieee-be');
+            oppendian = 'ieee-le';
         elseif strcmp(endian,'little-endian')
             fid = fopen(sacfile,'r','ieee-le');
+            oppendian ='ieee-be'  ;
         end
 
         % read in single precision real header variables:
         %---------------------------------------------------------------------------
         for i=1:70
-            test=fread(fid,1,'single');if length(test)==1;h(i)=test;else h(i)=6;end
-            %h(i)=fread(fid,1,'single')
+            h(i) = fread(fid,1,'single');
         end
 
         % read in single precision integer header variables:
         %---------------------------------------------------------------------------
         for i=71:105
-            test=fread(fid,1,'int32');if length(test)==1;h(i)=test;else h(i)=6;end
-            %h(i) = fread(fid,1,'int32');
+            h(i) = fread(fid,1,'int32');
         end
 
 
@@ -78,22 +78,35 @@ for nrecs = 1:nargin
             message = strcat('NVHDR = 4 or 5. File: "',sacfile,'" may be from an old version of SAC.');
             error(message)
         elseif h(77) ~= 6
-            message = strcat('Current rsac byte order: "',endian,'". File: "',sacfile,'" may be of opposite byte-order.');
-            error(message)
+            message = strcat('Current rsac byte order: "',endian,'". File: "',sacfile,'" may be of opposite byte-order. I try...');
+            disp(message)
+            fclose(fid);
+            fid = fopen(sacfile,'r',oppendian);
+            for i=1:70
+                h(i) = fread(fid,1,'single');
+            end
+            for i=71:105
+                h(i) = fread(fid,1,'int32');
+            end
+            if (h(77) == 4 | h(77) == 5)
+                message = strcat('NVHDR = 4 or 5. File: "',sacfile,'" may be from an old version of SAC.');
+                error(message)
+            elseif h(77) ~= 6
+                message = strcat('Current rsac byte order: "',endian,'". File: "',sacfile,'" is not current nor opposite byte-order.');
+                error(message)
+            end
         end
 
         % read in logical header variables
         %---------------------------------------------------------------------------
         for i=106:110
-            test=fread(fid,1,'int32');if length(test)==1;h(i)=test;else h(i)=6;end
-            %h(i) = fread(fid,1,'int32');
+            h(i) = fread(fid,1,'int32');
         end
 
         % read in character header variables
         %---------------------------------------------------------------------------
         for i=111:302
-            test=fread(fid,1,'char');if length(test)==1;h(i)=test;else h(i)=6;end
-            %h(i) = (fread(fid,1,'char'))';
+            h(i) = (fread(fid,1,'char'))';
         end
 
         % read in amplitudes
@@ -119,7 +132,6 @@ for nrecs = 1:nargin
         %---------------------------------------------------------------------------
 
         OUTPUT(:,1) = XARRAY;
-        if length(YARRAY)~=size(OUTPUT,1);YARRAY=zeros(size(OUTPUT,1),1);end
         OUTPUT(:,2) = YARRAY;
         OUTPUT(1:306,3) = h(1:306)';
 

@@ -57,9 +57,9 @@ clear CCC lesrecord seuilcluster nbmast
 [path2clusters] = NNK_clust2dtb(listeclusters,path2dtb,stamaitre,compo,sacextension,netcode) ;
 save([pathtotmp '/clstClustpaths.mat'],'path2clusters','sacextension','path2dtb')
 
+dtbliste ='' ; for i=1:length(path2clusters) ; if size(path2clusters{i},1) >0 ; dtbliste = [dtbliste ; path2clusters{i}(1,:)];end;end
 % %%% Working with the clusters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% clear all
-% NNK_dtb; % soon !
+NNK_dtb(dtbliste); 
 
 
 
