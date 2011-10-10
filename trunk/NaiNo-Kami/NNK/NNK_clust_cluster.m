@@ -79,10 +79,10 @@ save('tmp/clstClust_tmp.mat','a','links','lesrecord') ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Edit cluster list %%%%%%%%%%%%%%%%%%%
-clear all ; load('tmp/tmp2_2.mat') ;
+clear all ; load('tmp/clstClust_tmp.mat') ;
 % progress bar update %%%%%%%%%%%%%%%%%
 clc;disp(['Task 5/5. Edit cluster list. ']);
-listeclusters=cell(a,1);count=0; 
+listeclusters=cell(a,1);count=0;
 for i=1:a
     forliste=links{i};
     if sum(forliste)>1
@@ -93,7 +93,7 @@ for i=1:a
 end
 if count==0;listeclusters=cell(0);
 else listeclusters=listeclusters(1:count);
-end;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
