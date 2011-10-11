@@ -36,7 +36,7 @@ if exist('dtbliste','var')==0
 end
 
 
-for i=1:size(dtbliste,1) %52
+for i=327:size(dtbliste,1) %52
     %%% Prepare %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     path2clst=dtbliste(i,1:length(path2dtb)+33);
     system(['mkdir -p ' fullfile(path2clst,'tmp')]);
