@@ -16,7 +16,7 @@ else
     a=gca;
 end
 
-loc=pwd;if exist('pathname.mat','file') ==2 ;load ../tmp/pathname.mat ;  if exist(char(PathName),'dir')==7 ;cd(PathName);end;end
+loc=pwd;if exist('../tmp/pathname.mat','file') ==2 ;load ../tmp/pathname.mat ;  if exist(char(PathName),'dir')==7 ;cd(PathName);end;end
 [FileName,PathName] = uigetfile('*.*','Select GPS file');
 cd(loc);save ../tmp/pathname.mat PathName
 
