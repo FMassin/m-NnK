@@ -30,8 +30,8 @@ for i=ids
         end        
         if size(investigated,1) >= 1
             flagOK = 0;
-            dates = cell2mat(oldclust{i}([1 end],3));
-            if isempty(find(dates(1)>=investigated(:,1) & dates(2)<=investigated(:,2))) == 0
+            dates = cell2mat(oldclust{i}(:,3));
+            if isempty(find(dates(1)>=investigated(:,1) & dates(end)<=investigated(:,2))) == 0
                 flagOK = 1;
             end
         end
@@ -39,8 +39,14 @@ for i=ids
             if size(excluded,1) >= 1
                 flagOK = 0;
                 dates = cell2mat(oldclust{i}([1 end],3));
-                if isempty(find(dates(1)>=excluded(:,1) & dates(2)<=excluded(:,2))) == 1
+                if isempty(find(dates(1)>=excluded(:,1) & dates(end)<=excluded(:,2))) == 1
                     flagOK = 1;
+                end
+                for ii=1:length(dates)
+                    if isempty(find(dates(ii)>=excluded(:,1) & dates(ii)<=excluded(:,2))) == 0
+                        flagOK = 0;
+                        break
+                    end
                 end
             end
         end
