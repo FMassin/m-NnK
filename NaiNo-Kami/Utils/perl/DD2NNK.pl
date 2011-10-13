@@ -4,7 +4,8 @@
 # usage ./DD2NNK.pl ./hypoDD-hypo71/ hypo71 tomoDD #######################################################################
 
 my $len = scalar(@ARGV) ;
-if($len == 2) {$ARGV[2] = "hypoDD";} 
+if($len == 2) {$ARGV[2] = "hypoDD";$ARGV[3] = "";} 
+if($len == 3) {$ARGV[3] = "";}
 my $cnt = 0 ; 
 my $fileref = '';
 my $file1 = `ls $ARGV[0]/ID.txt`;
@@ -31,7 +32,7 @@ while(my $loc = <LOCS>) {
 
 			$cnt = $cnt+1 ;
 
-			my $file4 = $inp.'.reloc.'.$ARGV[2].'.'.$ARGV[1];
+			my $file4 = $inp.'.reloc.'.$ARGV[2].$ARGV[3].'.'.$ARGV[1];
 			my $file5 = $file4 .'/'.$ARGV[2];
 
 			print "mkdir -p $file4\n";
@@ -41,14 +42,14 @@ while(my $loc = <LOCS>) {
 			print "echo '$reloc' > $file4\n";
 			`echo '$reloc' > $file4`;
 			if ($cnt == 1) {
-			print "rm -rf $file5\n";
+			        print "rm -r $file5\n";
 				`rm -r $file5`;
 				print "cp -r $ARGV[0] $file5\n";
 				`cp -r $ARGV[0] $file5`;
 				my @elt = split('/',$file5);
 				$fileref = '../../../../../../../'.$elt[-8].'/'.$elt[-7].'/'.$elt[-6].'/'.$elt[-5].'/'.$elt[-4].'/'.$elt[-3].'/'.$elt[-2].'/'.$elt[-1].'/'.$elt[0] ;
 			} else {
-				print "rm -rf $file5\n";
+				print "rm -r $file5\n";
 				`rm -r $file5`;
 				print "ln -s $fileref  $file5\n";
 				`ln -s $fileref  $file5`;

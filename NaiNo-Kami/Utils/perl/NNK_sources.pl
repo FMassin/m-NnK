@@ -8,14 +8,16 @@
 #M#	  nll
 #M#	  hypodd-hypo71
 #M#	  hypodd-nlloc
+#M#       hypodd3d-hypo71
+#M#       hypodd3d-nlloc
 #M#	  tomodd-hypo71
 #M#	  tomodd-nlloc
 #M#	  fpfit
-#M#	  locs
-#M#	  relocs
-#M#	  1d
-#M#	  3d
-#M#	  all
+#M#	  locs : hyp nll
+#M#	  relocs : hypodd-hypo71 hypodd-nlloc hypodd3d-hypo71 hypodd3d-nlloc
+#M#	  1d : hyp hypodd-hypo71 
+#M#	  3d : nll hypodd3d-nlloc
+#M#	  all : hyp nll hypodd-hypo71 hypodd-nlloc hypodd3d-hypo71 hypodd3d-nlloc fpfit
 #M#
 #M#	 EXAMPLES :
 #M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/clst/*/*/*/*WY" "tomodd-hypo71"
@@ -24,7 +26,7 @@
 #M#	  ./NNK_sources.pl '/data/4Fred/WF/WY/clst/2008/01/01/20080101222940WY/events/*/*.inp' 'nll'
 #M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/dtec/1992/*/*/*WY/*.UUSS.inp" "locs"
 #M#
-#M#	fred.massin@gmail.com UUSATRG 06/23/2011
+#M#	fred.massin@gmail.com UUSATRG 10/13/2011
 ##########################################################################################################################
 my $apriori = "/home/fred/Documents/WY";
 #my $suffix = ".UUSS.inp";
@@ -99,7 +101,7 @@ if ($ARGV[1] ne "fpfit") {
 				#print "cp -r ./NLLoc $theinp.loc.nlloc\n";
 			}
 			
-			if(($ARGV[1] eq "locs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "loctv")) {
+			if($ARGV[1] eq "loctv") {
 				##########################################################################################################################
 				#3. Localisation tomoTV (Monteillier & Got) ##############################################################################
 				#print "### Location tomoTV using : $theinp \nloc $apriori/4tomoTV/loc.par\n";
@@ -141,10 +143,36 @@ if ($ARGV[1] ne "fpfit") {
 			system("hypoDD hypoDD.inp.nlloc");
 			system("cp ID.txt ./hypoDD-nlloc/") ;                
 			system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD-nlloc/");
-			system("./DD2NNK.pl ./hypoDD-nlloc/ nlloc tomoDD");
+			system("./DD2NNK.pl ./hypoDD-nlloc/ nlloc");
+		}
+		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d") || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd3d-nlloc") ) {
+                        ##########################################################################################################################
+                        #4. Localistaion DD hypoDD with station correction (Nercessian from Waldhauser)
+                        print "### 3D Re-location hypoDD with nlloc outputs\n";
+                        system("cp $apriori/4hypoDD3d/ph2dt.inp.nlloc  $apriori/4hypoDD3d/hypoDD.inp.nlloc $apriori/4hypoDD3d/station.dat .");
+                        if (-e "./hypoDD3d-nlloc") { system("rm -r ./hypoDD3d-nlloc");}
+                        system("mkdir -p ./hypoDD3d-nlloc");
+                        system("ph2dt ph2dt.inp.nlloc");
+                        system("hypoDD hypoDD.inp.nlloc");
+                        system("cp ID.txt ./hypoDD3d-nlloc/") ;
+                        system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD3d-nlloc/");
+                        system("./DD2NNK.pl ./hypoDD3d-nlloc/ nlloc hypoDD 3d");
+                }
+		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd3d-hypo71") ) {
+                        ##########################################################################################################################
+                        #4. Localistaion DD hypoDD with station correction (Nercessian from Waldhauser)
+                        print "### 3D Re-location hypoDD with hypo71 outputs\n";
+                        system("cp $apriori/4hypoDD3d/ph2dt.inp.hypo71  $apriori/4hypoDD3d/hypoDD.inp.hypo71 $apriori/4hypoDD3d/station.dat .");
+                        if (-e "./hypoDD3d-hypo71") { system("rm -r ./hypoDD3d-hypo71");}
+                        system("mkdir -p ./hypoDD3d-hypo71");
+                        system("ph2dt ph2dt.inp.hypo71");
+                        system("hypoDD hypoDD.inp.hypo71");
+                        system("cp ID.txt ./hypoDD3d-hypo71/") ;
+                        system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD3d-hypo71/");
+                        system("./DD2NNK.pl ./hypoDD-hypo71/ hypo71 hypoDD 3d");
 		}
 
-		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d") || ($ARGV[1] eq "all") || ($ARGV[1] eq "tomodd-hypo71")) {
+		if("tomodd-hypo71") {
 			##########################################################################################################################
 			#5. Localistaion DD tomoDD (Zhang)
 			print "### 3D Re-location tomoDD with hypo71 outputs\n";
@@ -169,7 +197,7 @@ if ($ARGV[1] ne "fpfit") {
 			`./DD2NNK.pl ./tomoDD-hypo71/ hypo71 tomoDD`;    
 		}
 
-		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d") || ($ARGV[1] eq "all") || ($ARGV[1] eq "tomodd-nlloc")) {
+		if($ARGV[1] eq "tomodd-nlloc") {
 			##########################################################################################################################
 			#5. Localistaion DD tomoDD (Zhang)
 			print "### 3D Re-location tomoDD with nlloc outputs\n";
@@ -214,8 +242,10 @@ if(($ARGV[1] eq "fpfit") || ($ARGV[1] eq "all")) {
 				my $hyp2 = $theinp.".loc.nlloc/h71.prt";
 				my $hyp3 = $theinp.".reloc.hypoDD.hypo71/h71.prt" ;
 				my $hyp4 = $theinp.".reloc.hypoDD.nlloc/h71.prt" ;
-				my $hyp5 = $theinp.".reloc.tomoDD.hypo71/h71.prt";
-				my $hyp6 = $theinp.".reloc.tomoDD.nlloc/h71.prt" ;
+				my $hyp5 = $theinp.".reloc.hypoDD3d.hypo71/h71.prt" ;
+                                my $hyp6 = $theinp.".reloc.hypoDD3d.nlloc/h71.prt" ;
+				my $hyp7 = $theinp.".reloc.tomoDD.hypo71/h71.prt";
+				my $hyp8 = $theinp.".reloc.tomoDD.nlloc/h71.prt" ;
 				my $hyp = $hyp1 ;
 				if (-e $hyp1) {$hyp = $hyp1 ;}
 				if (-e $hyp2) {$hyp = $hyp2 ;}
@@ -223,6 +253,8 @@ if(($ARGV[1] eq "fpfit") || ($ARGV[1] eq "all")) {
 				if (-e $hyp4) {$hyp = $hyp4 ;}
 				if (-e $hyp5) {$hyp = $hyp5 ;}
 				if (-e $hyp6) {$hyp = $hyp6 ;}
+				if (-e $hyp7) {$hyp = $hyp7 ;}
+                                if (-e $hyp8) {$hyp = $hyp8 ;}
 				`cat $hyp >> $inp/source/fpfit.prt `;
 				`echo " " >> $inp/source/fpfit.prt `;
 			}
