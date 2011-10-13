@@ -10,6 +10,8 @@ sub read_hypodd
 	print "reading : $reloc1D \n" ; open(FILE,"<$reloc1D");
 	my $line = <FILE>;
 	chomp($line) ;
+	$line =~ s/ \*\*\*\*\*\*\*\* / NaN /g;
+	$line =~ s/ \*\*\*\*\*\* / NaN /g;
 	my @test=split(" ",$line);
 #..../tomoDD.reloc
 #     210987654321
@@ -325,7 +327,7 @@ foreach $item(@list) {
 					chomp($diff);
 					if (abs($diff*1) < 5) {
 						print OUT "clust{$idcluster}{$idevent,25} = $magnitudes[$i];\n";
-						my $Mo=10^(1.1*$magnitudes[$i]+18.4) ; # [dyn.cm]
+						my $Mo=10**(1.1*$magnitudes[$i]+18.4) ; # [dyn.cm]
 						print OUT "clust{$idcluster}{$idevent,26} = $Mo;\n";
 						print "clust{$idcluster}{$idevent,25:26} = $magnitudes[$i] $Mo\n";
 					} 
@@ -333,14 +335,15 @@ foreach $item(@list) {
 		# FP
 				my $fpfit = $paf."/source/fpfit/fpfit.sum" ; 
 				if (-e $fpfit) { 
-					print OUT "clust{$idcluster}{$idevent,27} = $paf/source/fpfit/fpfit.pdf;\n";
+					print OUT "clust{$idcluster}{$idevent,27} = '$paf/source/fpfit/fpfit.pdf' ;\n";
 					my @fp = `cat $fpfit `;
 					$size = @fp;
 					for ($i=0; $i<$size; $i++) {
 						chomp($fp[$i]);
-						my $strikdiprake = substr($fp[$i],83,3)." ".substr($fp[$i],86,3)." ".substr($fp[$i],89,3)." ".substr($fp[$i],95,34);
-						print OUT "clust{$idcluster}{$idevent,28+$i} = $strikdiprake ;\n";
-						print "clust{$idcluster}{$idevent,28+$i} = $strikdiprake ;\n";
+						my $strikdiprake = substr($fp[$i],83,3)." ".substr($fp[$i],86,3)." ".substr($fp[$i],89,3)." ".substr($fp[$i],94,5)." ".substr($fp[$i],99,5)." ".substr($fp[$i],104,5)." ".substr($fp[$i],109,5)." ".substr($fp[$i],114,5)." ".substr($fp[$i],119,5)." ".substr($fp[$i],124,5)." ".substr($fp[$i],129,5);
+						$strikdiprake =~ s/ \*\*\* / NaN /g;
+						print OUT "clust{$idcluster}{$idevent,28+$i} = [ $strikdiprake ] ;\n";
+						print "clust{$idcluster}{$idevent,28+$i} = [ $strikdiprake ] ;\n";
 					}
 				}
 			}
