@@ -49,12 +49,12 @@ if ($test ne "inp") {
 ##########################################################################################################################
 # Locations ##############################################################################################################
 if ($ARGV[1] ne "fpfit") {
-	if (-e "./OLD_Result") { system("rm -r ./OLD_Result/*");}
-	system("mkdir -p ./OLD_Result");
-	`mkdir -p ./4DDs`;
-	system("rm ./4DDs/ID.txt");
+#	if (-e "./OLD_Result") { system("rm -r ./OLD_Result/*");}
+#	system("mkdir -p ./OLD_Result");
+#	`mkdir -p ./4DDs`;
+#	system("rm ./4DDs/ID.txt");
 
-	open(INPS,"<inpfilesnames") || print"WARNING: can't open constant definition file: inpfilesnames" ;
+#	open(INPS,"<inpfilesnames") || print"WARNING: can't open constant definition file: inpfilesnames" ;
 	while(my $inp = <INPS>) {
 		chomp($inp) ;
 		if ($flagdir eq 0) {`ls $inp > tmp`;}
@@ -113,11 +113,11 @@ if ($ARGV[1] ne "fpfit") {
 		close(THEINPS);
 		`rm tmp`;
 	}
-	close(INPS);
+#	close(INPS);
 
 	if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "tomodd-nlloc")  || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71")  || ($ARGV[1] eq "hypodd-nlloc") ) {
 		print "### Preparation of hypoDD catalogs\n";
-		system("./prt2ph2dt.pl"); 
+		#system("./prt2ph2dt.pl"); 
 
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71") ) {
 			##########################################################################################################################
@@ -128,8 +128,8 @@ if ($ARGV[1] ne "fpfit") {
 			system("mkdir -p ./hypoDD-hypo71");
 			system("ph2dt ph2dt.inp.hypo71");
 			system("hypoDD hypoDD.inp.hypo71");
-			system("cp ID.txt ./hypoDD-hypo71/") ; 
-			system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD-hypo71/");
+			system("cp 4DDs/*.hypo71 4DDs/ID.txt  ./hypoDD-hypo71/");
+			system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.sel station.dat event.??? hypoDD.??? *reloc* ./hypoDD-hypo71/");
 			system("./DD2NNK.pl ./hypoDD-hypo71/ hypo71");
 		}
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-nlloc") ) {
@@ -141,8 +141,8 @@ if ($ARGV[1] ne "fpfit") {
 			system("mkdir -p ./hypoDD-nlloc");
 			system("ph2dt ph2dt.inp.nlloc");
 			system("hypoDD hypoDD.inp.nlloc");
-			system("cp ID.txt ./hypoDD-nlloc/") ;                
-			system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD-nlloc/");
+			system("cp 4DDs/ID.txt  4DDs/*.nlloc ./hypoDD-nlloc/");         
+			system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat station.sel event.??? hypoDD.??? *reloc* ./hypoDD-nlloc/");
 			system("./DD2NNK.pl ./hypoDD-nlloc/ nlloc");
 		}
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d") || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd3d-nlloc") ) {
@@ -154,8 +154,8 @@ if ($ARGV[1] ne "fpfit") {
                         system("mkdir -p ./hypoDD3d-nlloc");
                         system("ph2dt ph2dt.inp.nlloc");
                         system("hypoDD hypoDD.inp.nlloc");
-                        system("cp ID.txt ./hypoDD3d-nlloc/") ;
-                        system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD3d-nlloc/");
+			system("cp 4DDs/ID.txt 4DDs/*.nlloc ./hypoDD3d-nlloc/");
+                        system("mv ph2dt.inp.nlloc hypoDD.inp.nlloc *.nlloc dt.ct ph2dt.log station.dat event.??? station.sel hypoDD.??? *reloc* ./hypoDD3d-nlloc/");
                         system("./DD2NNK.pl ./hypoDD3d-nlloc/ nlloc hypoDD 3d");
                 }
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd3d-hypo71") ) {
@@ -167,8 +167,8 @@ if ($ARGV[1] ne "fpfit") {
                         system("mkdir -p ./hypoDD3d-hypo71");
                         system("ph2dt ph2dt.inp.hypo71");
                         system("hypoDD hypoDD.inp.hypo71");
-                        system("cp ID.txt ./hypoDD3d-hypo71/") ;
-                        system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? hypoDD.??? *reloc* ./hypoDD3d-hypo71/");
+			system("cp 4DDs/ID.txt  4DDs/*.hypo71 ./hypoDD3d-hypo71/");
+                        system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? station.sel hypoDD.??? *reloc* ./hypoDD3d-hypo71/");
                         system("./DD2NNK.pl ./hypoDD-hypo71/ hypo71 hypoDD 3d");
 		}
 
