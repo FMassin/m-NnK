@@ -9,11 +9,9 @@ if numel(indeq)>0
     [~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,clust] = filtclust(clust,indeq,lims);
     [~,~,~,~,~,~,~,~,~,~,dates2] = addisolate(lims);
     dates2=sort(dates2);
-    
-    fortest = [1:size(clust,1)];
+    uniqratio=1:length(dates2);
     originclust=[];
-    %limx=[999999999999 0];
-    for i=fortest;
+    for i=1:size(clust,1)
         originclust = [originclust ; cell2mat(clust{i}(:,3))];
     end
     dates1=sort([dates2 ; originclust]);
@@ -83,18 +81,17 @@ elseif in ==7              % pour les ratio clst/T et Uniq/T
     clustnum = 1:length(originclust);    
     aver=diff(limx)/100;
     limx(2)=limx(2)+aver*5;limx(1)=limx(1)-aver*5;
-%     dates1 = sort([dates2 ; originclust]) ;  cumnums = 1:length(dates1);
-
+    dates1 = sort([dates2 ; originclust]) ;  cumnums = 1:length(dates1);
     
     inds1 = logical(logical(dates1 >= limx(1)) .* logical(dates1 <= limx(2))) ;
     Xt = dates1(inds1) ; 
-    Yt = cumnums(inds1)-min(cumnums(inds1)) ;  
+    Yt = cumnums(inds1)-min(cumnums(inds1))+1 ;  
     inds2 = logical(logical(originclust >= limx(1)) .* logical(originclust <= limx(2))) ;
     X1 = originclust(inds2) ; 
-    Y1 = clustnum(inds2) ; 
+    Y1 = clustnum(inds2)-min(clustnum(inds2))+1 ;  
     inds2 = logical(logical(dates2 >= limx(1)) .* logical(dates2 <= limx(2))) ;
     X2 = dates2(inds2) ; 
-    Y2 = uniqratio(inds2)-min(uniqratio(inds2)) ; 
+    Y2 = uniqratio(inds2)-min(uniqratio(inds2))+1 ; 
     
     limx(2)=limx(2)-aver*5;limx(1)=limx(1)+aver*5;
     [Y1,X1,Y2,X2,Yt,Xt] = myresample(limx,Y1,X1',Y2,X2',Yt,Xt');
