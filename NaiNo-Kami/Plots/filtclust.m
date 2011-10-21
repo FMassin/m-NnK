@@ -35,18 +35,20 @@ for i=1:size(clust,1);
         if sum(isnan(loc(:,1))) < length(loc(:,1)) & sum(isnan(loc(:,2))) < length(loc(:,1)) & sum(isnan(loc(:,3))) < length(loc(:,1))
             
             flag = 0 ;
-            if isnan(lims(1,1))==0 ; if nanmin(loc(:,1)) < lims(1,1) ; flag =1 ;
-                end ; end
-            if isnan(lims(1,2))==0 ; if nanmax(loc(:,1)) > lims(1,2) ; flag =1 ;
-                end ; end
-            if isnan(lims(2,1))==0 ; if nanmin(loc(:,2)) < lims(2,1) ; flag =1 ;
-                end ; end
-            if isnan(lims(2,2))==0 ; if nanmax(loc(:,2)) > lims(2,2) ; flag =1 ;
-                end ; end
-            if isnan(lims(3,1))==0 ; if nanmin(loc(:,3)) < lims(3,1) ; flag =1 ;
-                end ; end
-            if isnan(lims(3,2))==0 ; if nanmax(loc(:,3)) > lims(3,2) ; flag =1 ;
-                end ; end
+            if sum(sum(isnan(lims)))==0
+                if isnan(lims(1,1))==0 ; if nanmin(loc(:,1)) < lims(1,1) ; flag =1 ;
+                    end ; end
+                if isnan(lims(1,2))==0 ; if nanmax(loc(:,1)) > lims(1,2) ; flag =1 ;
+                    end ; end
+                if isnan(lims(2,1))==0 ; if nanmin(loc(:,2)) < lims(2,1) ; flag =1 ;
+                    end ; end
+                if isnan(lims(2,2))==0 ; if nanmax(loc(:,2)) > lims(2,2) ; flag =1 ;
+                    end ; end
+                if isnan(lims(3,1))==0 ; if nanmin(loc(:,3)) < lims(3,1) ; flag =1 ;
+                    end ; end
+                if isnan(lims(3,2))==0 ; if nanmax(loc(:,3)) > lims(3,2) ; flag =1 ;
+                    end ; end
+            end
             
             if flag == 0                
                 X(1:size(loc,1),i,ii) = (loc(:,1));
@@ -88,6 +90,10 @@ for i=1:size(clust,1);
 end
 if exist('mem','var')==0 ; disp('There is nothing to plot !');return;end
 
+X2=X2(1:Maxi,1:mem);
+Y2=Y2(1:Maxi,1:mem);
+X1=X1(1:2,1:mem);
+Y1=Y1(1:2,1:mem);
 X=X(1:Maxi,1:mem,:);
 Y=Y(1:Maxi,1:mem,:);
 Z=Z(1:Maxi,1:mem,:);

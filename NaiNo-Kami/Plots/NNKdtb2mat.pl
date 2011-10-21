@@ -287,7 +287,8 @@ foreach $item(@list) {
 					} else {print OUT "clust{$idcluster}{$idevent,19} = '' ;\nclust{$idcluster}{$idevent,20}(1:22) = NaN ;\n";}
 				} else {print OUT "clust{$idcluster}{$idevent,19} = '' ;\nclust{$idcluster}{$idevent,20}(1:22) = NaN ;\n";}
 
-				my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.tomoDD.hypo71/tomoDD.reloc';
+				my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.hypoDD3d.hypo71/hypoDD.reloc';
+				#my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.tomoDD.hypo71/tomoDD.reloc';
 				my ($dateEQ, $heure,  $year, $mont, $da, $hr, $minut, $seco, $lat, $lon, $dep, $RE, $RN, $RZ, $RMS, $sta, $RMSCT,$staCT) = read_hypodd($Enrichedreloc1D);
 				if ((1*$lat ne 0) && (1*$lon ne 0) && (1*$year ne 0)) {
 					if($dateEQ > 19000000) {                        #$date = substr($dateEQ,0,8).$heure;
@@ -295,7 +296,8 @@ foreach $item(@list) {
 					} else {print OUT "clust{$idcluster}{$idevent,21} = '' ;\nclust{$idcluster}{$idevent,22}(1:22) = NaN ;\n";}
 				} else {print OUT "clust{$idcluster}{$idevent,21} = '' ;\nclust{$idcluster}{$idevent,22}(1:22) = NaN ;\n";}
 
-				my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.tomoDD.nlloc/tomoDD.reloc';
+				my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.hypoDD3d.nlloc/hypoDD.reloc';
+				#my $Enrichedreloc1D = $event.'/'.$eltevent[-1].'.inp.enriched.reloc.tomoDD.nlloc/tomoDD.reloc';
 				my ($dateEQ, $heure,  $year, $mont, $da, $hr, $minut, $seco, $lat, $lon, $dep, $RE, $RN, $RZ, $RMS, $sta, $RMSCT,$staCT) = read_hypodd($Enrichedreloc1D);
 				if ((1*$lat ne 0) && (1*$lon ne 0) && (1*$year ne 0)) {
 					if($dateEQ > 19000000) {                        #$date = substr($dateEQ,0,8).$heure;
