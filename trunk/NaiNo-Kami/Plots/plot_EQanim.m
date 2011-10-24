@@ -1,5 +1,5 @@
 function plot_EQanim(in)
-global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endratio fieldedit   hpp hp handles limt RE RU xx yy zz ploted pourcentag
+global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endratio fieldedit   hpp hp handles limt RE RU xx yy zz tt ploted pourcentag
 
 
 
@@ -53,20 +53,20 @@ if in==1
     end
     limt=tt;
     [handles,hpp] =  plot_EQanim_1(tt,hpp,hp);
-    [ploted,pourcentag]=plot_EQanim_4(handles,RE,RU,xx,yy,zz,limt);
+    [ploted,pourcentag,tt]=plot_EQanim_4(handles,RE,RU,xx,yy,zz,limt);
     
 elseif in==2 % change up-small cursor posistion
     plot_EQanim_2(handles,limt);
-    [ploted,pourcentag]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt);
-    
+    [ploted,pourcentag,tt]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt,tt);
+    caxis([-100,100])
 elseif in==3 % change up-small edit field value
     plot_EQanim_3(handles,limt);
-    [ploted,pourcentag]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt);
-    
+    [ploted,pourcentag,tt]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt,tt);
+    caxis([-100,100])
 elseif in==4 % change bottom-big cursor position
     plot_EQanim_3(handles,limt);
-    [ploted]=plot_EQanim_6(handles,ploted,pourcentag,limt);
-    
+    [ploted]=plot_EQanim_6(handles,ploted,pourcentag,tt);
+    caxis([-100,100])
     
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,7 +74,10 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [pourcentag] = plot_EQanim_10(RE,RU,xx,yy,zz,tt,past)
+function [pourcentag,tt] = plot_EQanim_10(RE,RU,xx,yy,zz,limt,past)
+tt=limt(1):diff(limt)/30:limt(2) ; 
+NR=zeros(length(yy),length(xx),length(tt),length(zz));
+NU=NR;
 for t=1:length(tt)
     for x=1:length(xx)
         for y=1:length(yy)
@@ -84,29 +87,29 @@ for t=1:length(tt)
                 testu =sum(testu) ; testr =sum(testr);
                 if testu==[] ; testu = 0; end
                 if testr==[] ; testr = 0; end
-                if t==1
+%                 if t==1
                     NR(y,x,t,z) = testr ;
                     NU(y,x,t,z) = testu ;
-                else
-                    NR(y,x,t,z) = nansum([NR(y,x,t-1,z) testr]) ;
-                    NU(y,x,t,z) = nansum([NU(y,x,t-1,z) testu]) ;
-                end
+%                 else
+%                     NR(y,x,t,z) = nansum([NR(y,x,t-1,z) testr]) ;
+%                     NU(y,x,t,z) = nansum([NU(y,x,t-1,z) testu]) ;
+%                 end
             end
         end
     end
 end
-pourcentag = 110.*NR./(NU+NR) ; 
+pourcentag = 110.*NR./(NU+NR) ;
+globporcentag = repmat(  (110.*sum(NR,3)./(sum(NU,3)+sum(NR,3)))  ,[1 1 length(tt) 1]) ;
+pourcentag=globporcentag-pourcentag;
+disp('reloaded')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ploted]=plot_EQanim_6(handles,ploted,pourcentag,limt)
-past = 0.99*str2double(get(handles(14),'string'));
-tt = limt(1):past:limt(2)-past;
-time = get(handles(11),'value');
-time=find(((tt-time)>0).*((tt-time)<past)==1);
+function [ploted]=plot_EQanim_6(handles,ploted,pourcentag,tt)
+[~,time] = min(abs(tt-get(handles(11),'value'))) ;
 if numel(time)==0;time=1;end
-set(ploted,'CData',pourcentag(:,:,time));caxis([0 100]);
+set(ploted,'CData',pourcentag(:,:,time(1)));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -114,23 +117,21 @@ set(ploted,'CData',pourcentag(:,:,time));caxis([0 100]);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ploted,pourcentag]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt)
+function [ploted,pourcentag,tt]=plot_EQanim_5(handles,ploted,RE,RU,xx,yy,zz,limt,tt)
 past = 0.99*str2double(get(handles(14),'string'));
-tt = limt(1):past:limt(2)-past;
-time = get(handles(11),'value');
-time=find(((tt-time)>0).*((tt-time)<past)==1);
+[~,time] = min(abs(tt-get(handles(11),'value'))) ;
 if numel(time)==0;time=1;end
-[pourcentag] = plot_EQanim_10(RE,RU,xx,yy,zz,tt,past);
-set(ploted,'CData',pourcentag(:,:,time)); caxis([0 100]);
+[pourcentag,tt] = plot_EQanim_10(RE,RU,xx,yy,zz,limt,past);
+set(ploted,'CData',pourcentag(:,:,time(1))); 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ploted,pourcentag]=plot_EQanim_4(handles,RE,RU,xx,yy,zz,limt)
+function [ploted,pourcentag,tt]=plot_EQanim_4(handles,RE,RU,xx,yy,zz,limt)
 past = 0.99*str2double(get(handles(14),'string'));
-tt = limt(1):past:limt(2)-past;
-[pourcentag] = plot_EQanim_10(RE,RU,xx,yy,zz,tt,past);
+[pourcentag,tt] = plot_EQanim_10(RE,RU,xx,yy,zz,limt,past);
+
 lonlim = minmax(xx); latlim=minmax(yy);
 [loclatlab,pas]=plot_tick(latlim);
 [loclonlab,pas]=plot_tick(lonlim);
@@ -147,7 +148,7 @@ plot_Yell(ax)%,[-111.2 -110.7 44.75 44.8],
 hold on
 ploted=pcolorm(yy,xx,pourcentag(:,:,end));%shading interp
 hold off
-colorbar ;caxis([0 100]);
+colorbar ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -159,11 +160,11 @@ colorbar ;caxis([0 100]);
 function plot_EQanim_3(handles,limt)
 set(handles(10),'value',str2num(get(handles(14),'string')))
 set(handles(14),'string',num2str(get(handles(10),'value')))
-set(handles(11),'SliderStep',[get(handles(10),'value')/diff(limt) get(handles(10),'value')*10/diff(limt)])
+set(handles(11),'SliderStep',[1/10 1/100])
 set(handles(11),'Min',limt(1),'Max',limt(2))
 title(['Clustering percentage from ' ...
-    datestr(get(handles(11),'value')-get(handles(10),'value')/2) ' to ' ...
-    datestr(get(handles(11),'value')+get(handles(10),'value')/2) ]);
+    datestr(get(handles(11),'value')) ' to ' ...
+    datestr(get(handles(11),'value')+get(handles(10),'value')) ]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -171,13 +172,13 @@ title(['Clustering percentage from ' ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function plot_EQanim_2(handles,limt)
-set(handles(11),'SliderStep',[get(handles(10),'value')/diff(limt) get(handles(10),'value')*10/diff(limt)])
+set(handles(11),'SliderStep',[1/10 1/100])
 set(handles(14),'string',num2str(get(handles(10),'value')))
 set(handles(11),'Min',limt(1),'Max',limt(2))
 axes(handles(1));
 title(['Clustering percentage from ' ...
-    datestr(get(handles(11),'value')-get(handles(10),'value')/2) ' to ' ...
-    datestr(get(handles(11),'value')+get(handles(10),'value')/2) ]);
+    datestr(get(handles(11),'value')) ' to ' ...
+    datestr(get(handles(11),'value')+get(handles(10),'value')) ]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -202,7 +203,7 @@ handles(14) = uicontrol('Parent',hpp(end), ...
 
 handles(11)=uicontrol('Parent',hpp(end),'Style','slider',...
     'Max',limt(2),'Min',limt(1),'Value',limt(2)-get(handles(10),'Value')/2,...
-    'SliderStep',[0.1 diff(limt)],'Units','normalized','Position',[1/30 0 29/30 1/10],...
+    'SliderStep',[1/100 1/10],'Units','normalized','Position',[1/30 0 29/30 1/10],...
     'TooltipString','Time','Callback','plot_EQanim(4)');
 
 handles(12)=uicontrol('Parent',hpp(end),'Style','pushbutton',...
