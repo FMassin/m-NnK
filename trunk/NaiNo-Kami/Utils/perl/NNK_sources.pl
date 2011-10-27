@@ -28,9 +28,10 @@
 #M#
 #M#	fred.massin@gmail.com UUSATRG 10/13/2011
 ##########################################################################################################################
+my $flagdir =1;
 my $apriori = "/home/fred/Documents/WY";
 #my $suffix = ".UUSS.inp";
-#my $suffix = ".inp" ; 
+#my $suffix = "WY.inp" ; 
 my $suffix = ".inp.enriched" ; 
 my $tomo = 0 ; 
 my $nbel = @ARGV;
@@ -39,8 +40,10 @@ my $nbel = @ARGV;
 #0. preparation of inputs and output
 #if($nbel eq 2) {$ARGV[1]="all";}
 my $test=substr($ARGV[0],length($ARGV[0])-3,3);
-if ($test eq "inp") {system("ls $ARGV[0] > inpfilesnames");};
-my $flagdir =0;
+if ($test eq "inp") {
+	system("ls $ARGV[0] > inpfilesnames");
+	$flagdir =0;
+};
 if ($test ne "inp") {
 	$flagdir = 1 ;
       	system("ls -dl $ARGV[0] | grep drw | awk '{print \$8}' > inpfilesnames");
@@ -49,12 +52,12 @@ if ($test ne "inp") {
 ##########################################################################################################################
 # Locations ##############################################################################################################
 if ($ARGV[1] ne "fpfit") {
-#	if (-e "./OLD_Result") { system("rm -r ./OLD_Result/*");}
-#	system("mkdir -p ./OLD_Result");
-#	`mkdir -p ./4DDs`;
-#	system("rm ./4DDs/ID.txt");
+	if (-e "./OLD_Result") { system("rm -r ./OLD_Result/*");}
+	system("mkdir -p ./OLD_Result");
+	`mkdir -p ./4DDs`;
+	system("rm ./4DDs/ID.txt");
 
-#	open(INPS,"<inpfilesnames") || print"WARNING: can't open constant definition file: inpfilesnames" ;
+	open(INPS,"<inpfilesnames") || print"WARNING: can't open constant definition file: inpfilesnames" ;
 	while(my $inp = <INPS>) {
 		chomp($inp) ;
 		if ($flagdir eq 0) {`ls $inp > tmp`;}
@@ -117,7 +120,7 @@ if ($ARGV[1] ne "fpfit") {
 
 	if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "tomodd-nlloc")  || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71")  || ($ARGV[1] eq "hypodd-nlloc") ) {
 		print "### Preparation of hypoDD catalogs\n";
-		#system("./prt2ph2dt.pl"); 
+		system("./prt2ph2dt.pl"); 
 
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71") ) {
 			##########################################################################################################################
@@ -169,10 +172,10 @@ if ($ARGV[1] ne "fpfit") {
                         system("hypoDD hypoDD.inp.hypo71");
 			system("cp 4DDs/ID.txt  4DDs/*.hypo71 ./hypoDD3d-hypo71/");
                         system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? station.sel hypoDD.??? *reloc* ./hypoDD3d-hypo71/");
-                        system("./DD2NNK.pl ./hypoDD-hypo71/ hypo71 hypoDD 3d");
+                        system("./DD2NNK.pl ./hypoDD3d-hypo71/ hypo71 hypoDD 3d");
 		}
 
-		if("tomodd-hypo71") {
+		if($ARGV[1] eq "tomodd-hypo71") {
 			##########################################################################################################################
 			#5. Localistaion DD tomoDD (Zhang)
 			print "### 3D Re-location tomoDD with hypo71 outputs\n";
