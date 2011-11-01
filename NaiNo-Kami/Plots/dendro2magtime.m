@@ -1,9 +1,13 @@
-function [ax,ploted,hlegend]=dendro2magtime
+function [ax,ploted,hlegend]=dendro2magtime(clustin)
 
 global clust hpp hp fieldedit oldclust
 
-[time] = taketime ; 
-[clust,oldclust,limx]=takeclust(oldclust);
+if exist('clustin','var')==0
+    [time] = taketime ;
+    [clust,oldclust,limx]=takeclust(oldclust);
+else
+    clust=clustin;
+end
 
 nb=[2 +inf] ;
 cnt=0;
@@ -23,7 +27,7 @@ tim = zeros(cnt,300) ;maxim=tim;time2main=tim;normtime=tim';cumE=tim';Rnormtime=
 cnt=0;
 for clst = pickcluster(1:end)
     if size(clust{clst},1)> nb(1) & size(clust{clst},1) < nb(2) 
-        cnt=cnt+1;
+        cnt=cnt+1
         
         test=cell2mat(clust{clst}(:,25))';
         test(test==-9.99) = NaN ; 
@@ -40,7 +44,6 @@ for clst = pickcluster(1:end)
         time2main(cnt,1:size(clust{clst},1)) = test ;
                 
         normtime(1:size(clust{clst},1),cnt) = tim(cnt,1:size(clust{clst},1))./diff(minmax(tim(cnt,1:size(clust{clst},1)))) ;
-            
         test = 10.^(1.1*cell2mat(clust{clst}(:,25))+18.4);
         test(isnan(test)==1) = 0;
         testime = normtime(1:size(clust{clst},1),cnt);
@@ -60,7 +63,7 @@ for clst = pickcluster(1:end)
     end
 end
 
-
+%hpp=uipanel;
 [hpp] = resizepanels(hp,hpp,1);
 normtime(normtime<=0.001) = NaN;
 normtime(1,:)=0;
