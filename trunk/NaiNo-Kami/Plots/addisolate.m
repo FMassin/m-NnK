@@ -22,7 +22,7 @@ load ../tmp/membutton.mat;
 if strcmp(get(butt(3),'String'),'U')==1
     if exist('../tmp/plot_NNK.mat','file')== 2;    load ../tmp/plot_NNK.mat ;end
     mem = size(Y,2);
-    bornes = [datestr(param(4),'yyyymmddHHMMSS') ; datestr(param(5),'yyyymmddHHMMSS')] ;
+    bornes = [datestr(param(4),'yymmddHHMMSS') ; datestr(param(5),'yymmddHHMMSS')] ;
     
     if isnan(lims(1,1)) == 1 ; lims(1,1)=-360;end
     if isnan(lims(1,2)) == 1 ; lims(1,2)=360;end
