@@ -36,7 +36,7 @@ for ev=1:size(Strwfs,1)
                     mem=ev;
                     if numel(Strwfs{ev,net,sta,cmp,pha}) == 0 
                         for evref=[1:ev-1 ev+1:size(Strwfs,1)]
-                            if numel(Strwfs{evref,net,sta,cmp,pha}) > 0 & numel(Strdataless{evref,net,sta,cmp,pha})>=17 
+                            if numel(Strwfs{evref,net,sta,cmp,pha}) > 0 & numel(Strdataless{evref,net,sta,cmp,pha})>=17 & length(Amplref) >=evref & length(Amplref) >=mem
                             if Strdataless{evref,net,sta,cmp,pha}{15}>Strdataless{evref,net,sta,cmp,pha}{6} & Amplref(evref) > Amplref(mem)
                                 Strwfs{ev,net,sta,cmp,pha} = Strwfs{evref,net,sta,cmp,pha}/memAmplR(evref);
                                 Strdataless{ev,net,sta,cmp,pha} = Strdataless{evref,net,sta,cmp,pha};

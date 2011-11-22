@@ -148,7 +148,7 @@ for i5=dim5
                     end
 
                     % Stack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			        if strcmp(phases(i5),'P')==1 & numel(indend)==1
+			        if strcmp(phases(i5),'P')==1 & numel(indend)==1 & numel(cell2mat(Strwfs(dim1,i2,i3,i4,indend))) >= 2*dstack
 			 	    [Xall]=cell2mat2(Strwfs,dim1,i2,i3,i4,indend,dstack,init2);
 				    Xall=Xall(:,1:dstack);
                     [Xall]=NNK_shift(Xall,TStmp(:,1),d);
