@@ -27,6 +27,7 @@ while(my $file = <liste>) {
 				$hour = substr($datehhmms,6,2) ; 
 				$min = substr($datehhmms,8,2) ;
 			}
+			$line=$line."   0   0 ";
 	        	if($line =~ /($stauuss[\s\w])\s*([\w\?])\s*(\d)\s*(\d{1,3}\.\d{1,2})\s*(\d)\s*(\d{1,3}\.\d{1,2})\s*(\d{1,3})\s*(\d\.\d{1,2})\s*(\d\.\d{1,2})\s*(\d{1,2})\s*(\d{1,2})/) {
 #				reconnait |yhbz d   0  60.43 2  61.50   0  0.00  0.00   0   0     
 #            				   MCID ?   1  89.59 0   0.00  21  1.85  3.15  96 110     0
