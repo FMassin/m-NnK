@@ -1,0 +1,221 @@
+B205 b05_Z_WY
+b05z b05_Z_WY
+b05e b05_E_WY
+b05n b05_N_WY
+
+lohz loh_Z_WY
+SNO  SNO_Z_WY
+imwz imw_Z_WY
+
+B206 b06_Z_WY
+b06z b06_Z_WY
+b06e b06_E_WY
+b06n b06_N_WY
+
+B207 b07_Z_WY
+b07z b07_Z_WY
+b07e b07_E_WY
+b07n b07_N_WY
+
+B208 b08_Z_WY
+b08z b08_Z_WY
+b08e b08_E_WY
+b08n b08_N_WY
+
+B944 b44_Z_WY
+b44z b44_Z_WY
+b44e b44_E_WY
+b44n b44_N_WY
+
+B945 b45_Z_WY
+b45z b45_Z_WY
+b45e b45_E_WY
+b45n b45_N_WY
+
+flwz flw_Z_WY
+flwv flw_V_WY
+flwy flw_Z_IW
+FLWY FLW_Z_IW
+
+LKWY LKW_Z_US
+lkwz lkw_Z_US
+lkwe lkw_E_US
+lkwn lkw_N_US
+lkwl lkw_L_US
+lkwm lkw_M_US
+lkwv lkw_V_US
+
+MCID MCD_Z_WY
+
+QLMT QLM_Z_MB
+qlmz qlm_Z_MB
+
+TPMT TPM_Z_MB
+tpmz tpm_Z_MB
+
+Y2G Y2G_Z_WY
+
+YBE YBE_Z_WY
+YPBE YBE_Z_WY
+
+YCJ YCJ_Z_WY
+YPCJ YCJ_Z_WY
+
+YDC YDC_Z_WY
+YPDC YDC_Z_WY
+
+yftz yft_Z_WY
+yfte yft_E_WY
+yftn yft_N_WY
+
+yftl yft_E_WY
+yftm yft_N_WY
+yftv yft_Z_WY
+
+YFT YFT_Z_WY
+YFTZ YFT_Z_WY
+YFTE YFT_E_WY
+YFTN YFT_N_WY
+YPOF YFT_Z_WY
+YOF YFT_Z_WY
+
+YGC YGC_Z_WY
+YPGC YGC_Z_WY
+
+YHB YHB_Z_WY
+yhbz yhb_Z_WY
+yhbe yhb_E_WY
+yhbn yhb_N_WY
+
+YHHZ YHH_Z_WY
+YHHE YHH_E_WY
+YHHN YHH_N_WY
+
+YIT YIT_Z_WY
+YPIT YIT_Z_WY
+
+YJCZ YJC_Z_WY
+YJCE YJC_E_WY
+YJCN YJC_N_WY
+
+YHS YHS_Z_WY
+YPHS YHS_Z_WY
+
+YLA YLA_Z_WY
+YLAZ YLA_Z_WY
+YLAE YLA_E_WY
+YLAN YLA_N_WY
+YPLA YLA_Z_WY
+YPLB YLA_Z_WY
+
+YLT YLT_Z_WY
+
+YMC YMC_Z_WY
+YPMC YMC_Z_WY
+
+YMJ YMJ_Z_WY
+YPMJ YMJ_Z_WY
+YPM YPM_Z_WY
+
+YML YML_Z_WY
+YMLZ YML_Z_WY
+
+YMPZ YMP_Z_WY
+YMPE YMP_E_WY
+YMPN YMP_N_WY
+
+ymrz ymr_Z_WY
+ymre ymr_E_WY
+ymrn ymr_N_WY
+
+ymrl ymr_E_WY
+ymrm ymr_N_WY
+ymrv ymr_Z_WY
+
+YMR YMR_Z_WY
+YMRZ YMR_Z_WY
+YMRE YMR_E_WY
+YMRN YMR_N_WY
+
+YMS YMS_Z_WY
+
+YMV YMV_Z_WY
+YPMV YMV_Z_WY
+YPMH YMV_Z_WY
+
+YNJ YNJ_Z_WY
+YPNJ YNJ_Z_WY
+
+YNR YNR_Z_WY
+YNRZ YNR_Z_WY
+YNRE YNR_E_WY
+YNRN YNR_N_WY
+
+ynrz ynr_Z_WY
+ynre ynr_E_WY
+ynrn ynr_N_WY
+
+ynrl ynr_E_WY
+ynrm ynr_N_WY
+ynrv ynr_Z_WY
+
+
+YBE YPE_Z_WY
+YPBE YPE_Z_WY
+
+YPBR YPR_Z_WY
+
+YPC YPC_Z_WY
+YPPC YPC_Z_WY
+
+YPGV YGV_Z_WY
+
+YPKZ YPK_Z_WY
+YPKE YPK_E_WY
+YPKN YPK_N_WY
+
+
+YPP YPP_Z_WY
+
+YSB YSB_Z_WY
+YPSB YSB_Z_WY
+
+YTC YTC_Z_WY
+YPTC YTC_Z_WY
+
+YTP YTP_Z_WY
+
+yufz yuf_Z_WY
+yufe yuf_E_WY
+yufn yuf_N_WY
+yufv yuf_Z_WY
+yufl yuf_E_WY
+yufm yuf_N_WY
+
+YWB YWB_Z_WY
+YPWB YWB_Z_WY
+
+h17z h17_Z_WY
+h17e h17_E_WY
+h17n h17_N_WY
+
+h16z h16_Z_WY
+h16e h16_E_WY
+h16n h16_N_WY
+
+i17z i17_Z_TA
+i17e i17_E_TA
+i17n i17_N_TA
+
+g17z g17_Z_WY
+g17e g17_E_WY
+g17n g17_N_WY
+
+g18z g18_Z_WY
+g18e g18_E_WY
+g18n g18_N_WY
+
+i18z i18_Z_TA
+i18e i18_E_TA
+i18n i18_N_TA
+
