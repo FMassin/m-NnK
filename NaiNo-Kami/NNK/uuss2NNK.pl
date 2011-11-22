@@ -10,7 +10,7 @@ my $e = '                      ' ;
 my $staNNK ;
 my $sta = '   ' ;
 my $cnt = 0 ;
-my $path = '/home/fred/Documents/scripts/NaiNoKami/NaiNoKami_2/NNK/' ;
+my $path = '/home/fred/Documents/scripts/NaiNo-Kami/NNK/' ;
 my $file = $ARGV[0] ;
 my $stauuss = $ARGV[1] ; # substr(`$path/staname4NNK1.pl $ARGV[1] -1`,0,3) ; #$ARGV[1] ; #
 if($ARGV[1] eq "all") {
