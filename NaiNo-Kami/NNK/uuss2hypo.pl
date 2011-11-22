@@ -19,13 +19,14 @@ while(my $file = <liste>) {
 		my $datehhmms = 0 ; my $year ; my $mon ; my $mday ; my $hour ; my $min ; my $sec = 0 ; 
 		while(my $line = <lefichier>) {
 	        	chomp($line) ;
-	        	if($line =~ /(\d\d\d\d\d\d\d\d\d\d)/) {
-				$datehhmms = $1 ; 
+	        	if($line =~ /(\s)(\d\d[\d\s]\d[\d\s]\d[\d\s]\d[\d\s]\d)/) {
+				$datehhmms = $2 ; 
 				$year = substr($datehhmms,0,2) ; if($year <= 70) {$year=$year+100;}
 				$mon = substr($datehhmms,2,2)-1; 
 				$mday = substr($datehhmms,4,2) ;
 				$hour = substr($datehhmms,6,2) ; 
 				$min = substr($datehhmms,8,2) ;
+#				print "$line \n$year $mon  $mday $hour $min \n";
 			}
 			$line=$line."   0   0 ";
 	        	if($line =~ /($stauuss[\s\w])\s*([\w\?])\s*(\d)\s*(\d{1,3}\.\d{1,2})\s*(\d)\s*(\d{1,3}\.\d{1,2})\s*(\d{1,3})\s*(\d\.\d{1,2})\s*(\d\.\d{1,2})\s*(\d{1,2})\s*(\d{1,2})/) {
