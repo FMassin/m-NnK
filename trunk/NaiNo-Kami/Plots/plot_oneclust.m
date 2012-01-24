@@ -6,7 +6,7 @@ global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endr
 
 IND = 1;
 indsolution = 1 ;
-if exist('IND.mat','file') ~=0; load ../tmp/IND.mat;end
+if exist('../tmp/IND.mat','file') ~=0; load ../tmp/IND.mat;end
 
     
 if in == 1
@@ -55,12 +55,14 @@ elseif in ==5
     if 27+indsolution < size(clust{order(IND)},2) ;indsolution=indsolution+1;end
 elseif in ==4 % DC
     load ../tmp/tmpfaulplane.mat
-    disp(['You set double couple solution ' num2str(indsolution) ' and fault plan ' redorgreen(3:end) ' for cluster ' num2str(order(IND)) ' (' num2str(indices(order(IND))) '): ' num2str(clust{order(IND)}{1,27+indsolution}(1:3))])
+    disp(['You set double couple solution ' num2str(indsolution) ' and fault plan ' ...
+        redorgreen(3:end) ' for cluster ' num2str(order(IND)) ' (' ...
+        num2str(indices(order(IND))) '): ' num2str(clust{order(IND)}{1,27+indsolution}(1:3))])
     com = ['echo "' num2str(indsolution) '" > ' clust{order(IND)}{1,27}(1:end-3) 'sol'] ;
     disp(com) ; system(com);
     disp([clust{order(IND)}{1,27}(1:end-3) 'mat saved']); 
-    copyfile('tmpfaulplane.mat',[clust{order(IND)}{1,27}(1:end-3) 'mat'])
-    copyfile('tmpnodalplane.mat',[clust{order(IND)}{1,27}(1:end-4) '-aux.mat'])
+    copyfile('../tmp/tmpfaulplane.mat',[clust{order(IND)}{1,27}(1:end-3) 'mat'])
+    copyfile('../tmp/tmpnodalplane.mat',[clust{order(IND)}{1,27}(1:end-4) '-aux.mat'])
     disp('================================================================')
 elseif in == -4 % DC avec autre fault plane
     load ../tmp/tmpnodalplane.mat
@@ -68,8 +70,8 @@ elseif in == -4 % DC avec autre fault plane
     com = ['echo "' num2str(indsolution) '" > ' clust{order(IND)}{1,27}(1:end-3) 'sol'] ;
     disp(com) ; system(com);
     disp([clust{order(IND)}{1,27}(1:end-3) 'mat saved']); 
-    copyfile('tmpnodalplane.mat',[clust{order(IND)}{1,27}(1:end-3) 'mat'])
-    copyfile('tmpfaulplane.mat',[clust{order(IND)}{1,27}(1:end-4) '-aux.mat'])
+    copyfile('../tmp/tmpnodalplane.mat',[clust{order(IND)}{1,27}(1:end-3) 'mat'])
+    copyfile('../tmp/tmpfaulplane.mat',[clust{order(IND)}{1,27}(1:end-4) '-aux.mat'])
     disp('================================================================')
 elseif in ==7 %NDC
     disp(['You interpret cluster ' num2str(order(IND)) ' (' num2str(indices(order(IND))) ') as non-double couple:'])
@@ -133,12 +135,20 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
         test = cell2mat(clust{order(IND)}(:,indeq(i)-1)) ; test = test(1,:);
         ind=[findstr(test,'loc.')+4 findstr(test,'/')] ; forlege{i} = test(ind(1):ind(end)-1) ;
     end
-    S=[];D=[];R=[];
+    S=[];D=[];R=[];flag=0;
     if indsolution > 0 & indsolution < 100
-        test = cell2mat(clust{order(IND)}(:,27+indsolution)) ;
-        test = test(1,:);
-        S=test(1);  D=test(2);  R=test(3)*10;disp('WARNING Rake = Rake*10 !!!!!')
-        disp(['Strike | dip | rake = ' num2str([S D R])])
+        if exist([clust{order(IND)}{1,27}(1:end-3) 'mat'],'file')==2
+            disp([clust{order(IND)}{1,27}(1:end-3) 'mat ploted'])
+            load([clust{order(IND)}{1,27}(1:end-3) 'mat']);
+        end
+        if numel(S)==0
+            com=['sed -n ' num2str(indsolution) 'p   ' clust{order(IND)}{1,27}(1:end-3) 'sum'];disp(com);[poub1,test]=system(com);
+            S=str2num(test(84:86));  D=str2num(test(87:89));  R=str2num(test(90:93));
+        else flag=1;
+        end
+        disp(['RED: Strike | dip | rake = ' num2str([S D R])]) ; % red plane is the one inputed in drawball
+        [strikeGreen,dipGreen,rakeGreen]=n1_2_n2(S,D,R);
+        disp(['GREEN: Strike | dip | rake = ' num2str([strikeGreen dipGreen rakeGreen])])
         [diameter]= get_surfaceruturelength(Mcum,D,R);
         diameter=diameter/110;
         diameter=diameter*5;
@@ -158,15 +168,19 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
     set(hpp(end),'title',['cluster -' num2str(order(IND)) '- (' num2str(dist(IND)) ' km & ' num2str(IND-IND0) ' clst from picked)'])
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+    ax(1) = subplot(10,3,[5:3:30],'parent',hpp(end));
+    ax(2) = subplot(10,3,[6:3:30],'parent',hpp(end));
+    ax(3) = subplot(10,3,[13:3:30],'parent',hpp(end));
+    ax(4) = subplot(10,3,[4:3:10],'parent',hpp(end));
     
     % plot the magnitude %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    cla(ax(4)); axes(ax(4));
-    [AX,H1,H2] = plotyy(t,cumsum(Mo),t,M,'semilogy','plot');
+    cla(ax(4)); axes(ax(4));M(M<-1)=NaN;
+    [AX,H1,H2] = plotyy(t,cumsum(Mo),t,M,'plot','plot','b','r');%semilogy
     linkaxes(AX,'x');axes(AX(2));axis tight;axes(AX(1));axis tight
     set(get(AX(1),'Ylabel'),'String','Mo [dyn.cm]')
     set(get(AX(2),'Ylabel'),'String','M_{coda}')
     ylims = get(AX(1),'ylim');
-    set(AX(1),'ytick',logspace(log10(0.001),log10(ylims(2)),min([ylims(2) 10]))) ;
+    %set(AX(1),'ytick',logspace(log10(0.001),log10(ylims(2)),min([ylims(2) 10]))) ;
     set(AX(2),'ytick',plot_tick(get(AX(2),'ylim')));
     set(H1,'Linewidth',2);set(H2,'Linestyle','none','Marker','s')
     plot_gooddatetick(AX(1));
@@ -198,11 +212,25 @@ if in ==0 | in ==2 | in ==1 | in ==3 | in ==5 | in ==11
     cla(ax(2));axes(ax(2));hold on %[trend,plunge,Strike,Dip,Rake,flag,rms,largeclust] = chooseslip(S,D,R,loc(:,1),loc(:,2),loc(:,3),[kmlon kmlat 1]);
     %diameter = min([diff(get(ax(1),'xlim')) diff(get(ax(1),'ylim')) diff(get(ax(1),'zlim'))/110] )*55;
     if sum(1-isnan(loc{1}(:,1))) > 1
-        [strike,dip,XYZyellow] = fit3Dplane(loc{1}(:,1:3),1,ax(2),[1/kmlon 1/kmlat 1],diameter);
-        [~,~,XYXred,XYXgreen]=drawball(diameter,nanmean(loc{1}(:,1)),nanmean(loc{1}(:,2)),nanmean(loc{1}(:,3)),S,D,R,1,'none',ax(2),[1/kmlon 1/kmlat 1]);
+        [strike,dip,~,XYZyellow] = fit3Dplane(loc{1}(:,1:3),1,ax(2),[1/kmlon 1/kmlat 1],diameter);
+        [a,b,XYXred,XYXgreen]=drawball(diameter,nanmedian(loc{1}(:,1)),nanmedian(loc{1}(:,2)),nanmedian(loc{1}(:,3)),S,D,R,1,'none',ax(2),[1/kmlon 1/kmlat 1]);
         [XYZ,redorgreen,XYZinv]=get_goodplan(XYXred,XYXgreen,XYZyellow);
+        if redorgreen(1)=='2' & flag==0
+            delete(a);delete(b);
+            [S,D,R]=n1_2_n2(S,D,R);
+            [strikeGreen,dipGreen,rakeGreen]=n1_2_n2(S,D,R);
+            [a,b,XYXred,XYXgreen]=drawball(diameter,nanmedian(loc{1}(:,1)),nanmedian(loc{1}(:,2)),nanmedian(loc{1}(:,3)),S,D,R,1,'none',ax(2),[1/kmlon 1/kmlat 1]);
+            redorgreen='1: red  ';
+            tmp=XYZ;
+            XYZ = XYZinv ;
+            XYZinv = tmp;
+            disp(['RED: Strike | dip | rake = ' num2str([S D R])]) ; % red plane is the one inputed in drawball
+            disp(['GREEN: Strike | dip | rake = ' num2str([strikeGreen dipGreen rakeGreen])])
+        end
         disp(['Fault plane would be the ' upper(redorgreen(4:end)) ])
-        save ../tmp/tmpfaulplane.mat XYZ redorgreen ; XYZ=XYZinv ; redorgreen=[redorgreen '*-1']; save ../tmp/tmpnodalplane.mat XYZ redorgreen ;
+        save ../tmp/tmpfaulplane.mat XYZ S D R redorgreen ; 
+        XYZ=XYZinv ; [S,D,R]=n1_2_n2(S,D,R); redorgreen=[redorgreen '*-1']; 
+        save ../tmp/tmpnodalplane.mat XYZ S D R redorgreen ;
     else
         warning('where is less than 2 NaN hypocenter positions !')
     end

@@ -1,17 +1,19 @@
 function [X,Y,Z,erX,erY,erZ,XX,YY,ZZ,C3,to]=addisolate(lims)
 
 %,X1,X2,Y1,Y2,Ylat
-X=[];Y=[];Z=[];erX=[];erY=[];erZ=[];XX=[];YY=[];ZZ=[];C3=[];
+X=[];Y=[];Z=[];erX=[];erY=[];erZ=[];XX=[];YY=[];ZZ=[];C3=[];to=[];
 
 
 investigated = [];
 excluded = [];
 if exist('investigationperiods.m','file') ==2
+    disp('investigation period enabled')
     [investigated]=investigationperiods;
     investigated=[datenum(investigated(:,3),investigated(:,1),investigated(:,2)) datenum(investigated(:,6),investigated(:,4),investigated(:,5))];
     %investigated(:,1)=investigated(:,1)-1;investigated(:,2)=investigated(:,2)+1;
 end
 if exist('excludeperiods.m','file') ==2
+    disp('exclusion period enabled')
     [excluded]=excludeperiods;
     excluded=[datenum(excluded(:,3),excluded(:,1),excluded(:,2)) datenum(excluded(:,6),excluded(:,4),excluded(:,5))];
     %excluded(:,1)=excluded(:,1)-1;excluded(:,2)=excluded(:,2)+1;
@@ -31,21 +33,30 @@ if strcmp(get(butt(3),'String'),'U')==1
     if isnan(lims(3,1)) == 1 ; lims(3,1)=-360;end
     if isnan(lims(3,2)) == 1 ; lims(3,2)=360;end
     
-     
-    com = ['awk ''$1*1000000+$2*10000*$3*100+$4>' bornes(1,:) ...
-        ' && $1*1000000+$2*10000*$3*100+$4<' bornes(2,:) ...
-        ' {print $5+$6,$7+$8,$9,$10,$11,$12,$1*1000000+$2*10000*$3*100+$4}'' ~/PostDoc_Utah/Results/NNK/1981-2010/isolated.txt '...
-        ' | awk ''$2>' num2str(-1*lims(1,2)) ' && $2<' num2str(-1*lims(1,1)) ...
-        ' && $1>' num2str(lims(2,1)) ' && $1<' num2str(lims(2,2)) ...
-        ' && $3>' num2str(-1*lims(3,2)) ' && $3<' num2str(-1*lims(3,1)) ...
-        ' && $6<' num2str(5) ' {print $0}'' '];
-    
+    if str2num(bornes(2,:)) > str2num(bornes(1,:))   
+        com = ['awk ''$1*1000000+$2*10000+$3*100+$4>' bornes(1,:) ...
+            ' && $1*1000000+$2*10000+$3*100+$4<' bornes(2,:) ...
+            ' {print $5+$6,$7+$8,$9,$10,$11,$12,$1*1000000+$2*10000+$3*100}'' ~/PostDoc_Utah/Results/NNK/1981-2010/isolated.txt '...
+            ' | awk ''$2>' num2str(-1*lims(1,2)) ' && $2<' num2str(-1*lims(1,1)) ...
+            ' && $1>' num2str(lims(2,1)) ' && $1<' num2str(lims(2,2)) ...
+            ' && $3>' num2str(-1*lims(3,2)) ' && $3<' num2str(-1*lims(3,1)) ...
+            ' && $6<' num2str(5) ' {print $0}'' '];
+    else
+        com = ['awk ''$1*1000000+$2*10000+$3*100+$4>' bornes(1,:) ...
+            ' || $1*1000000+$2*10000+$3*100+$4<' bornes(2,:) ...
+            ' {print $5+$6,$7+$8,$9,$10,$11,$12,$1*1000000+$2*10000+$3*100}'' ~/PostDoc_Utah/Results/NNK/1981-2010/isolated.txt '...
+            ' | awk ''$2>' num2str(-1*lims(1,2)) ' && $2<' num2str(-1*lims(1,1)) ...
+            ' && $1>' num2str(lims(2,1)) ' && $1<' num2str(lims(2,2)) ...
+            ' && $3>' num2str(-1*lims(3,2)) ' && $3<' num2str(-1*lims(3,1)) ...
+            ' && $6<' num2str(5) ' {print $0}'' '];
+    end
+    disp(com);
     [a,b]=system(com);
     if numel(b) >= 3
         b=str2num(b)';
         
-        
-        to = datenum(num2str(b(7,:)'),'yyyymmddHHMMSS') ;
+        date=num2str(10000000000000+b(7,:)');
+        to = datenum(date(:,3:end),'yymmddHHMMSS') ;
         flagOK(1:length(to))=1;
         if size(investigated,1) >= 1
             for i=1:length(to)
@@ -73,7 +84,8 @@ if strcmp(get(butt(3),'String'),'U')==1
         X = b(2,:);
         Y = b(1,:);
         Z = b(3,:);
-        to = datenum(num2str(b(7,:)'),'yyyymmddHHMMSS') ;
+        date=num2str(10000000000000+b(7,:)');
+        to = datenum(date(:,3:end),'yymmddHHMMSS') ;
 
         [poub,answer]=system(['./distance.pl ' num2str([ nanmean(X) nanmean(Y) nanmean(X)+1 nanmean(Y) ])]);
         kmlon=abs(str2num(answer));
@@ -94,4 +106,6 @@ if strcmp(get(butt(3),'String'),'U')==1
         
         disp(['addisolate.m: ' num2str(size(b,2)) ' unique earthquakes added between ' datestr(param(4),'yyyy/mm/dd HH:MM:SS') ' and ' datestr(param(5),'yyyy/mm/dd HH:MM:SS')  ])
     end
+else
+    disp('Unique earthquakes are not enabled')
 end

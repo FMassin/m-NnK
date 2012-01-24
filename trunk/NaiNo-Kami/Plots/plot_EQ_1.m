@@ -67,7 +67,6 @@ if in==1 | in == 3 | in == 5
     end
     set(ax(1),'layer','top')
     plot_Yell(gca)%,[-111.2 -110.7 44.75 44.8]
-    plot_goodgeotick(ax(1))
     if in==1 | in == 3
         % E-W cross-section %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         axes(ax(2));

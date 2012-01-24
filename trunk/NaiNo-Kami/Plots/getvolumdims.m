@@ -1,5 +1,11 @@
 function [verts,fig,ax3d,p,hyps,strike] = getvolumdims(londegdecSVD,latdegdecSVD,profaslkmSVD,isoval,scales)
 
+dists=((nanmedian(londegdecSVD)-londegdecSVD).^2+(nanmedian(latdegdecSVD)-latdegdecSVD).^2+(nanmedian(110*profaslkmSVD)-110*profaslkmSVD).^2).^0.5;
+ind=find(dists<=(nanmean(dists)+0.1*nanstd(dists)));%nanmean(dists)+0.5*
+londegdecSVD=londegdecSVD(ind) ;
+latdegdecSVD=latdegdecSVD(ind) ;
+profaslkmSVD=profaslkmSVD(ind) ;
+
 %strike,dip,bigdiam,smalldiam,volums
 strike     = [] ;
 dip        = [] ;
@@ -161,8 +167,10 @@ Yval = repmat(reshape(Yval,[x 1 1]),[1 y z]) ;
 [faces,verts,colors] = isosurface(Xval,Yval,Zval,densite,isoval,colordata) ;
 
 %axes(ax3d) ; hold on
+p=[];
 p = patch('Vertices', verts, 'Faces', faces,'FaceVertexCData', colors,'FaceColor','interp','EdgeColor','none') ;
-%alpha(p,0.5) ;
+alpha(p,0.5) ;
+save p.mat p
 %axis equal
 %axis tight
 %for i=30:-1:10;view(0,i);drawnow;end ; for i=1:360;view(i,10-(i*10/360));drawnow;end

@@ -17,7 +17,7 @@ erX = [X X];erY = erX;erZ = erX;Maxi=0;
 
 inds=[];
 
-
+disp('.. filtering clusters')
 for i=1:size(clust,1);
     for ii=1%:length(indeq)
         if indeq(ii) >=18;dim=1000;else;dim=1;end

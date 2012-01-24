@@ -2,6 +2,30 @@ function plot_dendro_1(in)
 global clust oldclust a dates1 dates2 cumnums clustratio uniqratio neoratio endratio fieldedit   hpp hp
 
 
+if exist('investigationperiods.m','file') ==2
+    [investigated]=investigationperiods;
+    investigated=[datenum(investigated(:,3),investigated(:,1),investigated(:,2)) datenum(investigated(:,6),investigated(:,4),investigated(:,5))];
+    %investigated(:,1)=investigated(:,1)-1;investigated(:,2)=investigated(:,2)+1;
+    tmp=[];
+    for i=1:size(investigated,1)
+        tmp=[tmp ; dates1( logical(logical(dates1>=investigated(i,1)).*logical(dates1<=investigated(i,2))) ) ];
+    end
+    dates1=tmp;
+    cumnums=1:length(dates1);
+end
+if exist('excludeperiods.m','file') ==2
+    [excluded]=excludeperiods;
+    excluded=[datenum(excluded(:,3),excluded(:,1),excluded(:,2)) datenum(excluded(:,6),excluded(:,4),excluded(:,5))];
+    excluded = [0 ; reshape(excluded',numel(excluded),1) ; +inf];
+
+    tmp=[];
+    for i=1:2:size(excluded,1)
+        tmp=[tmp ; dates1( logical((dates1>=excluded(i)).*(dates1<=excluded(i+1))) ) ];
+    end
+    dates1=tmp;
+    cumnums=1:length(dates1);
+end
+
 %prend les bons clusters
 [time,indeq,lims] = taketime ;
 [clust,oldclust,limx]=takeclust(oldclust);
