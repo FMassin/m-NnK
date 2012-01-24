@@ -14,6 +14,6 @@ if length(ticks)>10
 end
 
 if length(ticks)>2*in
-    ticks=ticks(1:in:end);
+    ticks=ticks(in:in:end);
     pas=pas*in ;
 end

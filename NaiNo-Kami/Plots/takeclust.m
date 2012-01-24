@@ -19,7 +19,7 @@ if exist('excludeperiods.m','file') ==2
 end
 
 for i=ids
-    if size(oldclust{i},2) >= 24
+    if size(oldclust{i},2) >= 24 %& size(oldclust{i},1)>=50 & size(oldclust{i},1)<=100
         flagOK = 1;
         for ii = 1:size(oldclust{i},1)
             for iii=[6 8 10 18 16 24]

@@ -95,8 +95,8 @@ for net=nets ;
                         toplot=(toplot/1.5)+repmat((0:size(mat,2)-1),size(mat,1),1) ; 
                         h = plot(t,toplot,'color','m','linewidth',1.25,'parent',ax(cnto));
                         hold on 
-                        toplot=mat ; toplot(toplot<=0)=nan;
-                        toplot=(toplot/1.5)+repmat((0:size(mat,2)-1),size(mat,1),1) ; 
+                        toplot=mat./1.5 ; toplot(toplot<=0)=nan;
+                        toplot=toplot+repmat((0:size(mat,2)-1),size(mat,1),1) ; 
                         h2 = plot(t,toplot,'color','b','linewidth',1.25,'parent',ax(cnto));
                         h=[h;h2];
                         hold off
@@ -106,7 +106,7 @@ for net=nets ;
                     toplot=(toplot/1.5)+repmat((0:size(mat,2)-1),size(mat,1),1) ;
                     ylim([min(min(toplot)) max(max(toplot))])
                     grid on
-                    Ylabel(['Norm. amp. [' leg(1,1:8) ']'])
+                    Ylabel(['Norm. amp. [' leg(1,1:10) ']'])
                     if cnto ==1 
                         xlabel('Times [s]')
                     elseif cnto ==total   

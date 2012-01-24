@@ -7,8 +7,8 @@ if in==1
     
     [time,indeq,lims] = taketime ;
     [clust,oldclust]=takeclust(oldclust);
-    [X,Y,Z,~,tr] = filtclust(clust,indeq,lims);
     [Xu,Yu,Zu,~,~,~,~,~,~,~,tu] = addisolate(lims);
+    [X,Y,Z,~,tr] = filtclust(clust,indeq,lims);
     if numel(X)==0 ; disp('There is nothing to plot !');return;end
     X=reshape(X,1,numel(X));
     Y=reshape(Y,1,numel(X));
@@ -75,7 +75,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [pourcentag,tt] = plot_EQanim_10(RE,RU,xx,yy,zz,limt,past)
-tt=limt(1):diff(limt)/30:limt(2) ; 
+tt=limt(1):diff(limt)/100:limt(2) ; 
 NR=zeros(length(yy),length(xx),length(tt),length(zz));
 NU=NR;
 for t=1:length(tt)
@@ -109,7 +109,7 @@ disp('reloaded')
 function [ploted]=plot_EQanim_6(handles,ploted,pourcentag,tt)
 [~,time] = min(abs(tt-get(handles(11),'value'))) ;
 if numel(time)==0;time=1;end
-set(ploted,'CData',pourcentag(:,:,time(1)));
+set(ploted,'CData',pourcentag(:,:,time(1)));%shading interp
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -122,7 +122,7 @@ past = 0.99*str2double(get(handles(14),'string'));
 [~,time] = min(abs(tt-get(handles(11),'value'))) ;
 if numel(time)==0;time=1;end
 [pourcentag,tt] = plot_EQanim_10(RE,RU,xx,yy,zz,limt,past);
-set(ploted,'CData',pourcentag(:,:,time(1))); 
+set(ploted,'CData',pourcentag(:,:,time(1))); %shading interp
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -162,7 +162,7 @@ set(handles(10),'value',str2num(get(handles(14),'string')))
 set(handles(14),'string',num2str(get(handles(10),'value')))
 set(handles(11),'SliderStep',[1/10 1/100])
 set(handles(11),'Min',limt(1),'Max',limt(2))
-title(['Clustering percentage from ' ...
+title(['Clustering % changes from ' ...
     datestr(get(handles(11),'value')) ' to ' ...
     datestr(get(handles(11),'value')+get(handles(10),'value')) ]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -176,7 +176,7 @@ set(handles(11),'SliderStep',[1/10 1/100])
 set(handles(14),'string',num2str(get(handles(10),'value')))
 set(handles(11),'Min',limt(1),'Max',limt(2))
 axes(handles(1));
-title(['Clustering percentage from ' ...
+title(['Clustering % changes from ' ...
     datestr(get(handles(11),'value')) ' to ' ...
     datestr(get(handles(11),'value')+get(handles(10),'value')) ]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -215,7 +215,7 @@ handles(13)=uicontrol('Parent',hpp(end),'Style','checkbox',...
     'String','Movie','TooltipString','Record movie while playin','Callback','');
 
 axes(handles(1));
-title(['Clustering percentage from ' ...
+title(['Clustering % changes from ' ...
     datestr(get(handles(11),'value')-get(handles(10),'value')/2) ' to ' ...
     datestr(get(handles(11),'value')+get(handles(10),'value')/2) ]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

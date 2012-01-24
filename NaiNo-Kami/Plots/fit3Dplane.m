@@ -1,4 +1,4 @@
-function [strike,dip,XYZyellow,X1,Y1,Z1] = fit3Dplane(X,ploted,ax,scales,diameter)
+function [strike,dip,XYZyellow,shp] = fit3Dplane(X,ploted,ax,scales,diameter)
 
 if exist('ax','var') ==0;ax=gca;end
 if exist('ploted','var') ==0;ploted=0;end
@@ -86,4 +86,4 @@ if ploted==1
     %view(-23.5,5);
 end
 hold off
-    
+    shp=[X1 Y1 Z1];

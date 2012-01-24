@@ -9,11 +9,16 @@ if exist('no','var') ==0;no=0;end
         
 for laxe=ax
     axes(laxe);    
-    [format]=datetick(laxe,loc,'keeplimits')   ;
+    [format]=datetick(laxe,loc,'keeplimits')   ;%,'keeplimits'
     box on;
     grid on;
-   
-    title = ['{\bf Time [' format ']}'];
+        
+    if diff(get(ax,'xlim')) < 600
+        year=datestr(get(ax,'xlim'),'yyyy');
+        title = ['{\bf Time [' format ' ' year(1,:) ']}'];
+    else
+        title = ['{\bf Time [' format ']}'];
+    end
     if no~=0;
         title=' ';
         xticklabel=get(laxe,[loc 'ticklabel']);
