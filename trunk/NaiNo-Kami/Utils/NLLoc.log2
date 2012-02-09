@@ -1,0 +1,54 @@
+NLLoc (NonLinLoc v6.00.0 18Mar2011) 
+GRID: {x, y, z}
+  Num: {128, 178, 24}
+  Orig: {-59, -109, -4}
+  LenSide: {1, 1, 1}
+  Type: PROB_DENSITY
+NLLoc LOCQUAL2ERR:
+ 0 ->  0.090000
+ 1 ->  0.120000
+ 2 ->  0.300000
+ 3 ->  0.600000
+ 4 ->  99999.900000
+INFO: no station distance weighting (LOCSTAWT) values read.
+INFO: no Magnitude Calculation (LOCMAG) params read.
+INFO: no Component Descirption (LOCCMP) params read.
+INFO: no Alias (LOCALIAS) params read.
+INFO: no Exclude (LOCEXCLUDE) params read.
+INFO: no Time Delay (LOCDELAY) params read.
+INFO: no Topo Surface (LOCTOPO_SURFACE) params read.
+INFO: no Time Delay Surface (LOCDELAY_SURFACE) params read.
+INFO: no Elevation Correction (LOCELEVCORR) params read.
+INFO: no Fixed Origin Time (LOCFIXOTIME) params read.
+INFO: no Station (LOCSRCE or GTSRCE) params read.
+
+... Reading observation file ./inpfiles
+
+Reading next set of observations (Files open: Tot:5 Buf:0 Hdr:0  Alloc: 0) ...
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.tpm.time: rejecting observation: tpm P
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.bgm.time: rejecting observation: bgm P
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.mom.time: rejecting observation: mom P
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.flw.time: rejecting observation: flw P
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.bzm.time: rejecting observation: bzm P
+WARNING: cannot open time grid file: /home/fred/Documents/WY/4NLL/time_3d/yell.P.i17.time: rejecting observation: i17 P
+
+... 23 observations read, 17 will be used for location (./NLLoc/WY_.20100430.183459).
+LOCGAU param CorrLen is non-zero, will be used: 5.000000
+Locating... (Files open: Tot:5 Buf:0 Hdr:0  Alloc: 2244  3DMem: 17) ...
+
+Applying Octtree search within Grid 0:
+OctTree num samples = 5000 / 120000OctTree num samples = 10000 / 120000OctTree num samples = 15000 / 120000OctTree num samples = 20000 / 120000OctTree num samples = 25000 / 120000OctTree num samples = 30000 / 120000OctTree num samples = 35000 / 120000OctTree num samples = 40000 / 120000OctTree num samples = 45000 / 120000OctTree num samples = 50000 / 120000OctTree num samples = 55000 / 120000OctTree num samples = 60000 / 120000OctTree num samples = 65000 / 120000OctTree num samples = 70000 / 120000OctTree num samples = 75000 / 120000OctTree num samples = 80000 / 120000OctTree num samples = 85000 / 120000OctTree num samples = 90000 / 120000OctTree num samples = 95000 / 120000OctTree num samples = 100000 / 120000OctTree num samples = 105000 / 120000OctTree num samples = 110000 / 120000OctTree num samples = 115000 / 120000OctTree num samples = 120000 / 120000
+WARNING: max prob location on grid boundary 10, rejecting location.
+Octree oct_node_value_max= 1.456167e+00 oct_tree_integral= 1.140850e+01
+OCTREE nInitial 8 nEvaluated 120008 smallestNodeSide 0.062012/0.086426/0.011719 oct_tree_integral 1.140850e+01
+GeometryMode MODE_RECT
+ellipsoid_volume = 3.235455e+02
+
+Finished event location, output files: ./NLLoc/WY_.20100430.183459.* <./NLLoc/WY_.20100430.183459.grid0.loc.hyp>
+
+Reading next set of observations (Files open: Tot:5 Buf:0 Hdr:0  Alloc: 2244) ...
+
+...end of observation file detected.
+
+No more observation files.  1 events read,  1 events located,  1 locations completed.
+
