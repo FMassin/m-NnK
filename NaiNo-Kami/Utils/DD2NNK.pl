@@ -13,7 +13,7 @@ my $file2 = `ls $ARGV[0]/loc.txt.$ARGV[1]`;
 my $file3 = $ARGV[0].'/'.$ARGV[2].'.reloc';
 chomp($file1);
 chomp($file2);
-open (LOCS,"<$file2") || print"WARNING: can't open constant definition file" ;
+open (LOCS,"<$file2") || print"WARNING: can't open constant definition file $file2" ;
 
 
 while(my $loc = <LOCS>) {

@@ -1,35 +1,15 @@
 #!/usr/bin/perl 
 #             -w  affiche warning
 ##########################################################################################################################
-#M#	 USAGE : ./NNK_sources.pl 'path' 'task code'
-#M#
-#M#	 TASK CODES : 
-#M#	  hyp
-#M#	  nll
-#M#	  hypodd-hypo71
-#M#	  hypodd-nlloc
-#M#       hypodd3d-hypo71
-#M#       hypodd3d-nlloc
-#M#	  tomodd-hypo71
-#M#	  tomodd-nlloc
-#M#	  fpfit
-#M#	  locs : hyp nll
-#M#	  relocs : hypodd-hypo71 hypodd-nlloc hypodd3d-hypo71 hypodd3d-nlloc
-#M#	  1d : hyp hypodd-hypo71 
-#M#	  3d : nll hypodd3d-nlloc
-#M#	  all : hyp nll hypodd-hypo71 hypodd-nlloc hypodd3d-hypo71 hypodd3d-nlloc fpfit
-#M#
-#M#	 EXAMPLES :
-#M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/clst/*/*/*/*WY" "tomodd-hypo71"
-#M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/clst/*/*/*/*WY" "tomodd-nlloc"
-#M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/clst/*/*/*/*WY" fpfit
-#M#	  ./NNK_sources.pl '/data/4Fred/WF/WY/clst/2008/01/01/20080101222940WY/events/*/*.inp' 'nll'
-#M#	  ./NNK_sources.pl "/data/4Fred/WF/WY/dtec/1992/*/*/*WY/*.UUSS.inp" "locs"
-#M#
-#M#	fred.massin@gmail.com UUSATRG 10/13/2011
 ##########################################################################################################################
-my $flagdir =1;
+use Getopt::Std;
+use vars qw/ $opt_h /;
+getopts('h');
+if ($opt_h) {&usage(); exit;};
+
 my $apriori = "/home/fred/Documents/WY";
+my $tmp = "/home/fred/Documents/scripts/NaiNo-Kami/tmp";
+my $flagdir =1;
 #my $suffix = ".UUSS.inp";
 #my $suffix = "WY.inp" ; 
 my $suffix = ".inp.enriched" ; 
@@ -40,51 +20,50 @@ my $nbel = @ARGV;
 #0. preparation of inputs and output
 #if($nbel eq 2) {$ARGV[1]="all";}
 my $test=substr($ARGV[0],length($ARGV[0])-3,3);
-if ($test eq "inp") {
-	system("ls $ARGV[0] > inpfilesnames");
+if (($test eq "inp") || ($test eq "hed")) {
+	system("ls $ARGV[0] > $tmp/inpfilesnames");
 	$flagdir =0;
 };
-if ($test ne "inp") {
+if (($test ne "inp") && ($test ne "hed")) {
 	$flagdir = 1 ;
-      	system("ls -dl $ARGV[0] | grep drw | awk '{print \$8}' > inpfilesnames");
+      	system("ls -dl $ARGV[0] | grep drw | awk '{print \$8}' > $tmp/inpfilesnames");
 };
 
 ##########################################################################################################################
 # Locations ##############################################################################################################
 if ($ARGV[1] ne "fpfit") {
-	if (-e "./OLD_Result") { system("rm -r ./OLD_Result/*");}
-	system("mkdir -p ./OLD_Result");
-	`mkdir -p ./4DDs`;
-	system("rm ./4DDs/ID.txt");
+	if (-e "$tmp/OLD_Result") { system("rm -r $tmp/OLD_Result");}
+	system("mkdir -p $tmp/OLD_Result");
+	`mkdir -p $tmp/4DDs`;
+	system("rm $tmp/4DDs/ID.txt");
 
-	open(INPS,"<inpfilesnames") || print"WARNING: can't open constant definition file: inpfilesnames" ;
+	open(INPS,"<$tmp/inpfilesnames") || print"WARNING: can't open constant definition file: $tmp/inpfilesnames" ;
 	while(my $inp = <INPS>) {
 		chomp($inp) ;
-		if ($flagdir eq 0) {`ls $inp > tmp`;}
-		if ($flagdir eq 1) {`ls $inp/events/*/*$suffix > tmp`;} 
-		open(THEINPS,"<tmp") || print"WARNING: can't open constant definition file: tmp" ;
+		if ($flagdir eq 0) {`ls $inp > $tmp/tmp`;}
+		if ($flagdir eq 1) {`ls $inp/events/*/*$suffix > $tmp/tmp`;} 
+		open(THEINPS,"<$tmp/tmp") || print"WARNING: can't open constant file: $tmp/tmp" ;
 		while(my $theinp = <THEINPS>) {
 			chomp($theinp);
-			`ls $theinp >> ./4DDs/ID.txt`;
+			`ls $theinp >> $tmp/4DDs/ID.txt`;
 			if(($ARGV[1] eq "locs") || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hyp")) {
 				##########################################################################################################################
 				#1. Localisation hypo71 with station elevation correction (Nercessian)####################################################
 				print "### Location hypo71 using : $theinp\n";
-				system("cat $theinp > inpfiles");
-				if (-e "./hypo71") { system("rm -r ./hypo71");};
-				system("mkdir -p ./hypo71");
-				system("cat $apriori/4hypo71/STATE inpfiles > h.i");
-				system("echo h.i > zh"); 
-				system("echo $apriori/4hypo71/h.l >> zh"); 
-				system("echo $apriori/4hypo71/h.p >> zh");
-				system("echo $apriori/4hypo71/h.r >> zh");
-				system("echo >> zh "); 
-				system("echo $apriori/4hypo71/h.z >> zh");
-				system("Hypo < zh > zl.h");
-				system("mv h.i zh zl.h ./hypo71/");
-				system("cp $apriori/4hypo71/h.* ./hypo71/");
+				system("cat $theinp > $tmp/inpfiles");
+				if (-e "$tmp/hypo71") { system("rm -r $tmp/hypo71");};
+				system("mkdir -p $tmp/hypo71");
+				system("cat $apriori/4hypo71/STATE $tmp/inpfiles > h.i");
+				system("echo h.i > $tmp/hypo71/zh"); 
+				system("echo $apriori/4hypo71/h.l >> $tmp/hypo71/zh"); 
+				system("echo $apriori/4hypo71/h.p >> $tmp/hypo71/zh");
+				system("echo $apriori/4hypo71/h.r >> $tmp/hypo71/zh");
+				system("echo >> $tmp/hypo71/zh "); 
+				system("echo $apriori/4hypo71/h.z >> $tmp/hypo71/zh");
+				system("Hypo < $tmp/hypo71/zh > $tmp/hypo71/zl.h");
 				system("rm -rf $theinp.loc.hypo71");
-				system("cp -r ./hypo71 $theinp.loc.hypo71");
+				system("cp -r $tmp/hypo71 $theinp.loc.hypo71");
+				system("mv h.i $theinp.loc.hypo71");
 				#print "cp -r ./hypo71 $theinp.loc.hypo71\n";
 			}
 			
@@ -92,14 +71,14 @@ if ($ARGV[1] ne "fpfit") {
 				##########################################################################################################################
 				#2. Localisation NLLoc (Lomax) ###########################################################################################
 				print "### Location NLLoc using  : $theinp\n";
-				system("cat $theinp > test");
-				system("sed -e 's;                 10;#;' test > inpfiles");
-				if (-e "./NLLoc") { system("rm -r ./NLLoc ");};
-				system("mkdir -p ./NLLoc"); 
-				system("NLLoc $apriori/4NLL/NLL.inp > ./NLLoc.log2"); 
-				system("mv NLLoc ./NLLoc/");
+				system("cat $theinp > $tmp/test");
+				system("sed -e 's;                 10;#;' $tmp/test > $tmp/inpfiles");
+				if (-e "$tmp/NLLoc") { system("rm -r $tmp/NLLoc ");};
+				system("mkdir -p $tmp/NLLoc"); 
+				system("NLLoc $apriori/4NLL/NLL.inp > $tmp/NLLoc/NLLoc.log 2> $tmp/NLLoc/NLLoc.er"); 
+				#system("mv NLLoc $tmp/NLLoc/");
 				system("rm -rf $theinp.loc.nlloc");
-				system("cp -r ./NLLoc $theinp.loc.nlloc");
+				system("cp -r $tmp/NLLoc $theinp.loc.nlloc");
 				system("head -n 8 $theinp.loc.nlloc/WY_.????????.??????.grid0.loc.hyp | tail -n 2");
 				#print "cp -r ./NLLoc $theinp.loc.nlloc\n";
 			}
@@ -114,26 +93,32 @@ if ($ARGV[1] ne "fpfit") {
 			}
 		}
 		close(THEINPS);
-		`rm tmp`;
+		`rm $tmp/tmp`;
 	}
 #	close(INPS);
 
-	if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "tomodd-nlloc")  || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71")  || ($ARGV[1] eq "hypodd-nlloc") ) {
-		print "### Preparation of hypoDD catalogs\n";
-		system("./prt2ph2dt.pl"); 
+	if(($ARGV[1] eq "prt2ph2dt") || ($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "3d")  || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "tomodd-nlloc")  || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71")  || ($ARGV[1] eq "hypodd-nlloc") ) {
+		#print "### Preparation of hypoDD catalogs\n";
+		#system("./prt2ph2dt.pl $tmp"); 
 
+#run prt2ph2dt.pl 1 cas
+#run ph2dt        2 cas
+#run hypoDD       4 cas
+#mettre tomodd tomoTV en dehors
+ 
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "1d")  || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-hypo71") ) {
 			##########################################################################################################################
-			#4. Localistaion DD hypoDD with station correction (Nercessian from Waldhauser)
+			#4. Localistaion DD hypoDD (Waldhauser)
 			print "### Re-location hypoDD with hypo71 outputs\n";
-			system("cp $apriori/4hypoDD/ph2dt.inp.hypo71  $apriori/4hypoDD/hypoDD.inp.hypo71 $apriori/4hypoDD/station.dat ."); 
-			if (-e "./hypoDD-hypo71") { system("rm -r ./hypoDD-hypo71");}
+			if (-e "$tmp/hypoDD-hypo71") { system("rm -r $tmp/hypoDD-hypo71");}
 			system("mkdir -p ./hypoDD-hypo71");
+			system("cp $apriori/4hypoDD/station.dat $tmp/hypoDD-hypo71/"); 
+			system("cp $apriori/4hypoDD/ph2dt.inp.hypo71  $apriori/4hypoDD/hypoDD.inp.hypo71 .");
 			system("ph2dt ph2dt.inp.hypo71");
 			system("hypoDD hypoDD.inp.hypo71");
-			system("cp 4DDs/*.hypo71 4DDs/ID.txt  ./hypoDD-hypo71/");
-			system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.sel station.dat event.??? hypoDD.??? *reloc* ./hypoDD-hypo71/");
-			system("./DD2NNK.pl ./hypoDD-hypo71/ hypo71");
+			system("cp $tmp/4DDs/*.hypo71 $tmp/4DDs/ID.txt  $tmp/hypoDD-hypo71/");
+			system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.sel event.??? hypoDD.??? *reloc* $tmp/hypoDD-hypo71/");
+			system("./DD2NNK.pl $tmp/hypoDD-hypo71/ hypo71");
 		}
 		if(($ARGV[1] eq "relocs") || ($ARGV[1] eq "all") || ($ARGV[1] eq "hypodd") || ($ARGV[1] eq "hypodd-nlloc") ) {
 			##########################################################################################################################
@@ -174,6 +159,7 @@ if ($ARGV[1] ne "fpfit") {
                         system("mv ph2dt.inp.hypo71 hypoDD.inp.hypo71 *.hypo71 dt.ct ph2dt.log station.dat event.??? station.sel hypoDD.??? *reloc* ./hypoDD3d-hypo71/");
                         system("./DD2NNK.pl ./hypoDD3d-hypo71/ hypo71 hypoDD 3d");
 		}
+
 
 		if($ARGV[1] eq "tomodd-hypo71") {
 			##########################################################################################################################
@@ -302,3 +288,67 @@ if(($ARGV[1] eq "tomos") || ($ARGV[1] eq "all") || ($ARGV[1] eq "tomotv")) {
 	#	#   	les resultats sont dans: res_tomo_dd. Inversion conjointe des vitesse P hypocentres (avec les differences de temps).	
 	#	#   Pour visualiser les resultats, lancer matlab dans les repertoire du resultat concerne et lancer vi_iter a partir de la console matlab.
 }
+
+
+
+
+exit;
+#
+# Help message about this program and how to use it
+#
+sub usage {
+print <<"EOF";
+     USAGE  
+	$0 -h                 	: print usage
+	$0 <path> <task code> 	: compute hypocenters from input 
+				  		  files in <path>
+
+     PATH
+	<path> == list of pick files                            [hypo71 format]
+		run location of the inputed earthquake, one after each other.
+		                                             ! locations only !
+
+	<path> == list of multiplets                  [directories, NNK format] 
+		run task code, location first, one multiplet after each other
+		if asked, relocation are ran after all asked locations.
+ 
+     TASK CODES 
+	hyp             : run hypo71
+	nll             : run NLLoc
+	hypodd-hypo71   : run hypoDD with hypo71 
+	hypodd-nlloc    : run hypoDD with NLLoc
+	hypodd3d-hypo71 : run hypoDD with hypo71 and your 3D velocity model
+	hypodd3d-nlloc  : run hypoDD with NLLoc and your 3D velocity model
+	tomodd-hypo71   : run tomoDD with hypo71 and your 3D velocity model
+	tomodd-nlloc    : run tomoDD with hypo71 and your 3D velocity model
+	fpfit           : run fpfit with NNK multiplets and best available 
+			  hypocenters
+
+     COMBO CODES 
+	locs   : hyp & nll
+	relocs : hypodd-hypo71 & hypodd-nlloc & hypodd3d-hypo71 & hypodd3d-nlloc
+	1d     : hyp & hypodd-hypo71 
+	3d     : nll & hypodd3d-nlloc
+	all    : hyp & nll & hypodd-hypo71 & hypodd-nlloc & hypodd3d-hypo71 & 
+		 hypodd3d-nlloc & fpfit
+
+     EXAMPLES 
+	$0 "/data/4Fred/WF/WY/clst/*/*/*/*WY" "tomodd-hypo71"
+	$0 "/data/4Fred/WF/WY/clst/*/*/*/*WY" "tomodd-nlloc"
+	$0 "/data/4Fred/WF/WY/clst/*/*/*/*WY" fpfit
+	$0 '/data/4Fred/WF/WY/clst/2008/01/01/20080101222940WY/events/*/*.inp' 'nll'
+	$0 "/data/4Fred/WF/WY/dtec/1992/*/*/*WY/*.UUSS.inp" "locs"
+
+     fred.massin\@gmail.com UUSATRG 10/02/2012
+
+EOF
+exit;
+};
+
+#
+# run hypoDD with NNK data, update NNK catalog with results
+#
+sub hypoDDclean {
+        my ($styll) = @_ ;
+        return($styl) ;
+};
