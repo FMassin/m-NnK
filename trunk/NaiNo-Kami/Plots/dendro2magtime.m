@@ -27,7 +27,7 @@ tim = zeros(cnt,300) ;maxim=tim;time2main=tim;normtime=tim';cumE=tim';Rnormtime=
 cnt=0;
 for clst = pickcluster(1:end)
     if size(clust{clst},1)> nb(1) & size(clust{clst},1) < nb(2) 
-        cnt=cnt+1
+        cnt=cnt+1;
         
         test=cell2mat(clust{clst}(:,25))';
         test(test==-9.99) = NaN ; 
