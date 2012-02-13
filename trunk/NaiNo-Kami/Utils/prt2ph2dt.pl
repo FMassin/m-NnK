@@ -1,11 +1,12 @@
 #!/usr/bin/perl
 #             -w  affiche warning
 ##########################################################################################################################
-# usage ./prt2ph2dt.pl "/data/fred/dot/clst-test/2008/05/05/*/events/*/*.inp" ###########################################
+# usage ./prt2ph2dt.pl "../tmp" "/data/fred/dot/clst-test/2008/05/05/*/events/*/*.inp" ###########################################
 
-`mkdir -p ./4DDs`;
 my $NLL = 0 ;
-if (@ARGV > 0) {`ls $ARGV[0]> ./4DDs/ID.txt`;};
+if (@ARGV < 0) { $ARGV[0] = "../tmp";};
+`mkdir -p $ARGV[0]/4DDs`;
+if (@ARGV > 1) {`ls $ARGV[1]> $ARGV[0]/4DDs/ID.txt`;};
 my $clust = 0;
 my $memclust = "0" ;
 my $ID = 0 ;
@@ -13,19 +14,19 @@ my @list="";
 my @list3d="";
 my $flagnewclust = 0;
 
-open (EVTS,">./4DDs/event.dat.hypo71") ;
-open (PHAS,">./4DDs/phase.dat.hypo71") ;
-open (LOCS,">./4DDs/loc.txt.hypo71") ;
+open (EVTS,">$ARGV[0]/4DDs/event.dat.hypo71") ;
+open (PHAS,">$ARGV[0]/4DDs/phase.dat.hypo71") ;
+open (LOCS,">$ARGV[0]/4DDs/loc.txt.hypo71") ;
 
-open (LOCS3D,">./4DDs/loc.txt.nlloc") ;
-open (EVTS3D,">./4DDs/event.dat.nlloc") ;
-open (PHAS3D,">./4DDs/phase.dat.nlloc") ;
-open (PHAS3D2,">./4DDs/phase.dat.nlloc.tomoDD") ;
+open (LOCS3D,">$ARGV[0]/4DDs/loc.txt.nlloc") ;
+open (EVTS3D,">$ARGV[0]/4DDs/event.dat.nlloc") ;
+open (PHAS3D,">$ARGV[0]/4DDs/phase.dat.nlloc") ;
+open (PHAS3D2,">$ARGV[0]/4DDs/phase.dat.nlloc.tomoDD") ;
 
-open (DTCC,">./4DDs/4dt.cc.hypo71") ;
-open (DTCC3D,">./4DDs/4dt.cc.nlloc") ;
+open (DTCC,">$ARGV[0]/4DDs/4dt.cc.hypo71") ;
+open (DTCC3D,">$ARGV[0]/4DDs/4dt.cc.nlloc") ;
 
-open (INPS,"<./4DDs/ID.txt") || print"WARNING: can't open constant definition file: ID.txt" ;
+open (INPS,"<$ARGV[0]/4DDs/ID.txt") || print"WARNING: can't open constant definition file: $ARGV[0]/ID.txt" ;
 
 while(my $inp = <INPS>) {
     chomp($inp) ;#/data/fred/dot/clst-test/2008/05/05/20080505011500WY/events/20080505011500WY/080505011500.inp
@@ -253,5 +254,5 @@ close(EVTS3D);
 close(PHAS3D);
 close(DTCC3D);
 close(PHAS3D2);
-system("./ph2dt2hypoDD.pl ./4DDs/4dt.cc.hypo71 hypo71");
-system("./ph2dt2hypoDD.pl ./4DDs/4dt.cc.nlloc nlloc");
+system("./ph2dt2hypoDD.pl $ARGV[0]/4DDs/4dt.cc.hypo71 hypo71 $ARGV[0]/4DDs");
+system("./ph2dt2hypoDD.pl $ARGV[0]/4DDs/4dt.cc.nlloc nlloc $ARGV[0]/4DDs ");

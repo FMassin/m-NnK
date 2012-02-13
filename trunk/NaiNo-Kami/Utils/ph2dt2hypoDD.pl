@@ -2,11 +2,13 @@
 #             -w  affiche warning
 ##########################################################################################################################
 # usage ./NNK2hypoDD.pl ##################################################################################################
+#       ./ph2dt2hypoDD.pl ../tmp/4DDs/4dt.cc.hypo71 hypo71 ../tmp/4DDs");
+#       ./ph2dt2hypoDD.pl ../tmp/4DDs/4dt.cc.nlloc nlloc ../tmp/4DDs ");
 
 
 #`mv dt.cc dt.cc.old`;
-open (PRTS,"<$ARGV[0]") || print"WARNING: can't open constant definition file: 4dt.cc" ;
-open (DTCC,">./4DDs/dt.cc.$ARGV[1]") || print"WARNING: can't open constant definition file: ./4DDs/dt.cc" ;
+open (PRTS,"<$ARGV[0]") || print"WARNING: can't open constant definition file: $ARGV[0]\n" ;
+open (DTCC,">$ARGV[2]/dt.cc.$ARGV[1]") || print"WARNING: can't open constant definition file: $ARGV[2]/dt.cc.$ARGV[1]\n" ;
 
 while(my $line = <PRTS>) {
 	chomp($line) ;#fichier1 ID1 fichier2 ID2
