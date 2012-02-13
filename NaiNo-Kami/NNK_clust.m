@@ -100,13 +100,9 @@ clear CCC lesrecord seuilcluster nbmast
 dtbliste ='';for i=1:length(path2clusters);if size(path2clusters{i},1)>0;dtbliste = [dtbliste ; path2clusters{i}(1,:)] ;end;end
 save([pathtotmp '/clstClustpaths.mat'],'path2clusters','sacextension','path2dtb','dtbliste');
 
-
-
-
-
-
 %%% Working with the clusters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% load([pathtotmp '/clstClustpaths.mat']);
+load([pathtotmp '/clstClustpaths.mat'])
+dtbliste ='' ; for i=1:length(path2clusters) ; if size(path2clusters{i},1) >0 ; dtbliste = [dtbliste ; path2clusters{i}(1,:)];end;end
 NNK_dtb(dtbliste); 
 
 
