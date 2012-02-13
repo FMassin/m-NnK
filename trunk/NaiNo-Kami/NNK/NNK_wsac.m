@@ -34,13 +34,13 @@ for i1=dim1
                 for i5=dim5
                     if length(Strwfs{i1,i2,i3,i4,i5})>1 & length(Strdataless{i1,i2,i3,i4,i5})>=18
                         % progress bar update %%%%%%%%%%%%%%%%%%%%%%%%%
-                        message=['write stack wav:' num2str(i5) '/' num2str(d5) ' ch:' num2str(i4) '/' num2str(d4) ' sta:' num2str(i3) '/' num2str(d3) ' rec:' num2str(i1) '/' num2str(d1)];disp(message);
+                        message=['write stack wav:' num2str(i5) '/' num2str(d5) ' ch:' num2str(i4) '/' num2str(d4) ' sta:' num2str(i3) '/' num2str(d3) ' rec:' num2str(i1) '/' num2str(d1)];%disp(message);
                         [direct,poub]=fileparts(Strdataless{i1,i2,i3,i4,i5}{14});
                         [poub,direct]=fileparts(direct);
                         system(['mkdir -p ' fullfile(path2clst,direct)]);
                         sacfilename = fullfile(fullfile(path2clst,direct),[prefix Strdataless{i1,i2,i3,i4,i5}{2} '_' Strdataless{i1,i2,i3,i4,i5}{3} '_' Strdataless{i1,i2,i3,i4,i5}{4} '_' Strdataless{i1,i2,i3,i4,i5}{5} exten]);
                         hdrfilename = fullfile(path2dtb,[Strdataless{i1,i2,i3,i4,i5}{2} '_' Strdataless{i1,i2,i3,i4,i5}{3} '_' Strdataless{i1,i2,i3,i4,i5}{4} '.mat' ]);
-                        disp(['using ' hdrfilename ' in ' sacfilename]);
+                        %disp(['using ' hdrfilename ' in ' sacfilename]);
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         % load basic headers                          %
                         load(hdrfilename) ;                           % => hdr
@@ -101,9 +101,10 @@ for i1=dim1
     if exist('formatinp','var')==1 & length(direct) >0;
         [file] = makeinp(formatinp,['E' exten],fullfile(path2clst,direct));
         filename=fullfile(fullfile(path2clst,direct),[direct '.inp']) ;
-        delete(filename);
+        if exist(filename,'file')~=0;delete(filename);end
         dlmwrite(filename,file,'-append','delimiter','','newline',mycomputer)
-        disp([filename ' written']);
+        %disp([filename ' written']);
     end
+    disp(['Event ' num2str(i1) ': wfs. alligned/stacked'])
 end
 

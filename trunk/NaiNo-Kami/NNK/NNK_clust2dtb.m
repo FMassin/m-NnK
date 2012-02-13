@@ -15,12 +15,11 @@ if size(listeclusters,1) > 0
     
     for i = 1: maxi
         
-        
         % Prefer known cluster as master %%%%%%
         liste = listeclusters{i};
         inds = 1:size(liste,1) ; 
         flag = 0 ;  
-        for ii = 1:size(liste,1)
+        for ii=1:size(liste,1)
             [pathfile]= fileparts(liste(ii,:)) ;
             if strcmp(pathfile(1:length(path2dataoutput)),path2dataoutput) == 1
                 inds = [ii 1:ii-1 ii+1:size(liste,1)] ; 
@@ -35,29 +34,33 @@ if size(listeclusters,1) > 0
             % Create new cluster %%%%%%%%%%%%%%%%%
             [pathevent,event] = fileparts(liste(1,:)) ; 
             newpath = fullfile(path2dataoutput,event(1:4),event(5:6),event(7:8),event)  ;   
+            eventspath = fullfile(newpath,'events') ;
             if exist(newpath,'dir') ~= 7
                 mkdir(newpath) ;
-                copyfile([liste(1,:) '/*' sacextension],[newpath '/']) ;
-                eventspath = fullfile(newpath,'events') ;
+                copyfile([liste(1,:) '/*' sacextension],[newpath '/'])
                 depart = 1 ;
-                disp(['NEW CLUSTER : ' liste(1,:) ' copied to ' newpath]);
+                message= ['NEW CLUSTER : ' liste(1,:) ' copied to ' newpath]; 
+                mkdir(eventspath) ;
             else
-                disp(['KNOWN CLUSTER : ' liste(1,:) ' updating']);
+                depart=1;
+                message= ['KNOWN CLUSTER : ' liste(1,:) ' updating']; %disp(message)
             end
         else
             % Update known cluster %%%%%%%%%%%%%%%
             eventspath = fullfile(liste(1,:),'events') ; 
             depart = 2 ;
-            disp(['KNOWN CLUSTER : ' liste(1,:) ' updating']);
+            message= ['KNOWN CLUSTER : ' liste(1,:) ' updating']; %disp(message)
+            mkdir(eventspath) ;
         end
-        mkdir(eventspath) ;
+        
         
         % Move file to clust %%%%%%%%%%%%%%%%%
-        newliste = ''; 
-        for ii =depart:size(liste,1)
+        newliste = ''; already='';
+        for ii=depart:size(liste,1)
             [poubelle,event] = fileparts(liste(ii,:)) ; 
-            [poubelle,test] = system(['ls -dl ' liste(ii,:)]) ; 
+            [poubelle,test] = system(['ls -dl ' liste(ii,:)]) ;
             cible = fullfile(eventspath,event)  ;
+            newliste = [newliste ; cible] ;
             if strcmp(test(1),'d') == 1 
                 movefile(liste(ii,:),[eventspath '/']) ;                
                 relatifcible = ['../../../../' cible(1,end-55:end)] ; 
@@ -66,10 +69,12 @@ if size(listeclusters,1) > 0
                 %man ln : ln -s cible/source nomdulien 
                 commande = ['ln -s ' relatifcible ' ' liste(ii,:)] ; % adressage relatif
                 system(commande) ;
-                newliste = [newliste ; cible] ;
-                disp([liste(ii,:) ' moved to ' eventspath ' & ' relatifcible ' linked to ' liste(ii,:)]);
+                message= [ liste(ii,:) ' moved to ' eventspath ' & ' relatifcible ' linked to ' liste(ii,:)];
+            elseif strcmp(test(1),'l') == 1 
+                message= [ liste(ii,:) ' is already linked to a cluster '];%disp(message)
+                already=[already ' ' liste(ii,end-16:end)];
             else
-                warning([ liste(ii,:) ' is not a directory, NNK can not link it to ' eventspath ])
+                message= [ liste(ii,:) ' is not a directory, NNK can not link it to ' eventspath ];%disp(message)
             end
         end
         path2clusters{i} = newliste ; 
@@ -95,9 +100,9 @@ if size(listeclusters,1) > 0
                 magnitudes(ii) = magnitude/divide ;
                 if divide == 0 ;
                     magnitudes(i) = 0 ;
-                    warning(['no MAG header read for ' tmpliste(ii,:)]);
+                    message= ['no MAG header read for ' tmpliste(ii,:)];%disp(message)
                 else
-                    disp(['Mmoy(' tmpliste(ii,:) ') = ' num2str(magnitudes(ii))])
+                    message= ['Mmoy(' tmpliste(ii,:) ') = ' num2str(magnitudes(ii))] ;%disp(message)
                 end
             end
             
@@ -107,7 +112,7 @@ if size(listeclusters,1) > 0
             [rootsclust] = fileparts(rootsclust) ;
             delete([rootsclust '/*' sacextension]) ;
             copyfile([master '/*' sacextension], [rootsclust '/']) ;
-            disp(['Master update : delete ' rootsclust '/*' sacextension ' & copy ' master '/*' sacextension ' to ' rootsclust '/'])
+            message= [ 'Master update : delete ' rootsclust '/*' sacextension ' & copy ' master '/*' sacextension ' to ' rootsclust '/'];%disp(message)
         
         
             % Create events link in clst dtbase
@@ -129,7 +134,7 @@ if size(listeclusters,1) > 0
                         relatifrootsclust = ['../../../../' rootsclust(1,end-31:end)] ;
                         commande = ['ln -s ' relatifrootsclust ' ' newrootsclust] ; % adressage relatif
                         system(commande) ;
-                        disp(['Link to ' relatifrootsclust ' in ' newrootsclust])
+                        message= ['Link to ' relatifrootsclust ' in ' newrootsclust];%disp(message)
                     else
                         warning(['directory ' newrootsclust ' exist and contains :']);
                         dir(newrootsclust)
@@ -137,10 +142,11 @@ if size(listeclusters,1) > 0
                 end
             end
         else
-            warning(['no file to read in ' eventspath '/*' wfsextention])
+            warning(['no file to read in ' eventspath '/*' wfsextention]);
         end
         % progress bar update %%%%%%%%%%%%%%%%%
-        message=['Writing cluster ' num2str(i) '/' num2str(maxi)];
+        message=['Writing cluster ' num2str(i) '/' num2str(maxi) '. '];%disp(message)
+        if numel(already)~=0 ; message=[message 'CAUTION, WERE ALREADY WRITTEN IN THIS CLUSTER: ' already ];end
         clc;count=count+1;[progress_bar_position]=textprogressbar(count,maxi,progress_bar_position,toc(tm),message);tm=tic;
     end
 end

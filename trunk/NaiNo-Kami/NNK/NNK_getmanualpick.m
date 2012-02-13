@@ -15,7 +15,7 @@ file = fullfile(pathtomanualinp,[dirname '.p']);
 if exist(file,'file') == 2
     commande = [pickimportcomand ' ' file  ' ' sta ' all'];
     [a,b] = system(commande) ;
-    disp(commande);disp([sta ' | ' b(1:min([100 length(b)]))])
+    %disp(commande);disp([sta ' | ' b(1:min([100 length(b)]))])
     %b='PD 100430183300 089.07 S  100430183300 000.00 C  100430183300 098.00 E  100430183300 247.07 YWB  YWB';
     %   1  4        13  17   22                40   45                63   68                86   91                  
     if numel(b) >= 20

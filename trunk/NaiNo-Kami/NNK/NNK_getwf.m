@@ -28,7 +28,7 @@ function [data,dataless,memKpath,memKEVNM,memKNETWK,memKSTNM,memKCMPNM,mempha]=N
 
 % defaults %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 sec2day=1/(24*60*60);maxnpts=0;minutes=1/(24*60):1/(24*60):1;cut='';P=[];S=[];C=[];E=[];
-path='';eve='*';station='*';compo='Z';pha='*';logax=0;
+path='';eve='*';station='*';compo='Z';pha='*';logax=0;aliases='';
 endian='big-endian';demean=0;filt=0;rms=0;spectro=0;psdfl=0;detrend=0;whit=0;onbit=0;fixmin=0;syncr=0;rminstr=0;
 
 % load your eventual defaults %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,8 +82,20 @@ for j=1:size(station,1);for jj=1:size(compo,1);level='';for i=1:10; for jjj=1:si
                 test='';
                 level=repmat('/*',1,i-1);
                 
+ 
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*sac.linux' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*sac.linux' ])];
+                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' eve(jjj,:) '*' station(j,:) '*sac.linux' ])];
+                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' eve(jjj,:) '*' compo(jj,:) '*sac.linux' ])];
+                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' station(j,:) '*' eve(jjj,:) '*sac.linux' ])];
+                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' compo(jj,:) '*' eve(jjj,:) '*sac.linux' ])];
+                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*sac' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*sac' ])];
@@ -96,6 +108,7 @@ for j=1:size(station,1);for jj=1:size(compo,1);level='';for i=1:10; for jjj=1:si
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
                 test=[test ' ' fullfile(path,level,['*' station(j,:) '*' compo(jj,:) '*' eve(jjj,:) '*sac' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+                
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*SAC' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*SAC' ])];
@@ -143,8 +156,7 @@ if exist('test.txt','file')==2
                 end
 
                 % read data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                if maxi>=500;count=count+1;clc;[progress_bar_position]=textprogressbar(count,maxi,progress_bar_position,toc(etm),'');etm=tic;end
-                MEM=file(end-17:end-15);disp(['Reading ' file ' as :' MEM]);
+                MEM=file(end-17:end-15);message=(['Reading ' file ' as :' MEM]);
                 %if strfind(file,'clst') > 0 ; endian = 'little-endian' ; else ; endian = 'big-endian' ; end
                 %/data/4Fred/WF/WY/clst/1993/11/01/19931101080430WY/YLA_Z_WY.sac.linux is a big-endian
                 out = rsac(file,endian);
@@ -162,7 +174,8 @@ if exist('test.txt','file')==2
                     % set pretty headers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     KNETWK=KNETWK(isspace(KNETWK)==0);
                     if strcmp(KNETWK,'-12345')==1|numel(KNETWK)==0;KNETWK=netcode;end
-                    KSTNM=MEM; 
+                    [a,b]=system(['./Utils/perl/staname4NNK1.pl ' KSTNMEM ' 1 ' aliases]);message=[message '. ' KSTNMEM ' is aliased to ' b];
+                    KSTNM=b ;%KSTNMEM;%MEM;
                     KSTNM =KSTNM( isspace(KSTNM) ==0);
                     if strcmp(KSTNM,'-12345')==1|numel(KSTNM)==0;warning(['Defined KSTNM field in ' file]);end
                     if KSTNM(end) == 'Z' | KSTNM(end) == 'z';KSTNM=KSTNM(1:end-1);end
@@ -234,12 +247,12 @@ if exist('test.txt','file')==2
                                 leg=[leg ' synchronized'];
                             end
                             leg=[leg datestr(zero1)];
-                            disp([leg ' ' num2str(size(out,1)) ' points. Netw:' KNETWK '. Stat:' KSTNM '. Comp:' KCMPNM '. Event:' KEVNM ]) ;
+                            message=([message '. ' leg ' ' num2str(size(out,1)) ' points. Netw:' KNETWK '. Stat:' KSTNM '. Comp:' KCMPNM '. Event:' KEVNM ]) ;
                             
                         elseif find(pha=='P')>0 | find(pha=='S')>0 | find(pha=='C')>0 | find(pha=='E')>0 ;
                             % cut asked waves %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                            [KSTA,filepick,WFP,WFS,WFC,WFE,cut,P,S,C,E]=NNK_selectarrivals(out,fen,codafen,secutim,pathtoNNKdtec,pickimportcomand,file,KSTNMEM,zero1,DELTA,pha);
-                            
+                            [KSTA,filepick,WFP,WFS,WFC,WFE,cut,P,S,C,E,mes]=NNK_selectarrivals(out,fen,codafen,secutim,pathtoNNKdtec,pickimportcomand,file,KSTNMEM,zero1,DELTA,pha);
+                            message=[message '. ' mes];
                             if length(cut)>0
                                 % Update event name %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                 KEVNM=datestr(datenum(filepick(1:14),'yyyymmddHHMMSS'));
@@ -251,7 +264,7 @@ if exist('test.txt','file')==2
                                 [indKSTNM ,memKSTNM] =findandupdate(memKSTNM ,KSTNM) ;
                                 [indKCMPNM,memKCMPNM]=findandupdate(memKCMPNM,KCMPNM);
                                 leg=[leg datestr(zero1)];
-                                disp([leg ' ' num2str(size(out,1)) ' points. Netw:' KNETWK '. Stat:' KSTNM '. Comp:' KCMPNM '. Event:' KEVNM ]) ;
+                                message=([ message '. ' leg ' ' num2str(size(out,1)) ' points. Netw:' KNETWK '. Stat:' KSTNM '. Comp:' KCMPNM '. Event:' KEVNM ]) ;
                             end
                         end
                             
@@ -278,27 +291,23 @@ if exist('test.txt','file')==2
                             savename =  fullfile(path2dtb,['stat/' KNETWK '_' KSTNM '_' KCMPNM '.mat']); 
                             if exist(savename,'file')~=2;hdr=out(:,end);save(savename,'hdr');end
                         end
-                        
-                        
                     end
                 end
-                done=[done file];
+                done=[done file];                        
             end
+            if maxi>=500;clc;[progress_bar_position]=textprogressbar(i,maxi,progress_bar_position,toc(etm),message);etm=tic;else disp(message);end
         end
             
         % Reduce (data & dataless have been declared with dummy dimensions) %%%%%%%
         %[i1,i2,i3,i4,i5]=size(data);disp(num2str([i1 i2 i3 i4 i5]));[i1,i2,i3,i4,i5]=size(dataless);disp(num2str([i1 i2 i3 i4 i5]));disp(num2str([size(memKEVNM,1) size(memKNETWK,1) size(memKSTNM,1) size(memKCMPNM,1) size(mempha,1)]));
-	data=data(1:size(memKEVNM,1),1:size(memKNETWK,1),1:size(memKSTNM,1),1:size(memKCMPNM,1),1:size(mempha,1));
+        data=data(1:size(memKEVNM,1),1:size(memKNETWK,1),1:size(memKSTNM,1),1:size(memKCMPNM,1),1:size(mempha,1));
         dataless=dataless(1:size(memKEVNM,1),1:size(memKNETWK,1),1:size(memKSTNM,1),1:size(memKCMPNM,1),1:size(mempha,1));
     end
 end
 disp('============================LOADED============================')
 [i1,i2,i3,i4,i5]=size(data);		disp(['struct     data : ' num2str([i1 i2 i3 i4 i5]) ' {rec*net*sta*cha*wav}(:,1) ']);
 [i1,i2,i3,i4,i5]=size(dataless);	disp(['struct dataless : ' num2str([i1 i2 i3 i4 i5]) ' {rec*net*sta*cha*wav}{rec;net;sta;cha;wav;t0;fs;size;opt;fen;filt;leg;log;file;P;S;C;E}']);
-
-
-
-
+if i1==1; error(['NNK did not read any data in inputed path:' path]);end
 
 
 
