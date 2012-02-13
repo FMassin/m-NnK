@@ -65,8 +65,7 @@ if exist('dtbliste','var')==0
 end
 
 
-
-for i=1:size(dtbliste,1) %52
+for i=438:438 % 1:size(dtbliste,1) % 1111 52
     %%% Prepare %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     path2clst=dtbliste(i,1:length(path2dtb)+33);
     [~,~,~]=mkdir(fullfile(path2clst,'tmp'));   [~,~,~]=mkdir(fullfile(path2clst,'interf'));
@@ -120,6 +119,7 @@ for i=1:size(dtbliste,1) %52
     %%% write Stacked and alligned %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % load([path2clst '/tmp/dtbCCCenriched.mat'])
     % load([path2clst '/tmp/dtbCCC.mat'])
+    system(['rm -r ' fullfile(path2clst,'stacks/*')]);
     clc;disp(['Cluster ' num2str(i) '/' num2str(size(dtbliste,1))]);disp(['... ' path2clst(end-33:end)])
     [filesstacks] = NNK_wsac(Strwfs(end,:,:,:,:),Strdataless(end,:,:,:,:),fullfile(path2clst,'stacks'),fullfile(path2dtb,'stat'),[sacextension '.stack'],'',formatinp,mycomputer) ;
     [files] = NNK_wsac(Strwfs(1:end-1,:,:,:,find(mempha=='E')),Strdataless(1:end-1,:,:,:,find(mempha=='E')),fullfile(path2clst,'events'),fullfile(path2dtb,'stat'),[sacextension '.alligned'],'',formatinp,mycomputer) ;
