@@ -1,4 +1,4 @@
-function [KSTA,KEVNT,WFP,WFS,WFC,WFE,cut,absP,absS,absC,absE]=NNK_selectarrivals(out,fen,codafen,secutim,pathtoNNKdtec,pickimportcomand,listefichier,lesstat,zero1,DELTA,pha)
+function [KSTA,KEVNT,WFP,WFS,WFC,WFE,cut,absP,absS,absC,absE,message]=NNK_selectarrivals(out,fen,codafen,secutim,pathtoNNKdtec,pickimportcomand,listefichier,lesstat,zero1,DELTA,pha)
 
 init = zeros(secutim+fen,2) ;
 codainit = zeros(secutim+codafen,2) ; 
@@ -44,4 +44,4 @@ if find(pha=='E') > 0 & numel(E) > 0 % Windowing from P-secutim to E
     cut = [cut;'E'];
 end
 test=' ,  ,  ,  ,  ,  ';test(1:3:length(cut)*3)=cut;test = test(1:3:length(cut)*3);
-disp([test ' picks found for ' lesstat ])
+message= ([test ' picks found for ' lesstat ]);

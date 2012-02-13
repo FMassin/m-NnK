@@ -21,7 +21,7 @@ for i = 1 : size(listesac,1)
     compo = listesac(i,splited(2)+1:splited(3)-1); 
     
     if strcmp(compo,'Z') == 1 & exist(fullfile(event,listesac(i,:)),'file')==2
-        disp(['Using ' fullfile(event,listesac(i,:))])
+        %disp(['Using ' fullfile(event,listesac(i,:))])
         out = rsac(fullfile(event,listesac(i,:)));
         [A,KA,T1,T2,KT1,KT2,NZYEAR,NZJDAY,NZHOUR,NZMIN,NZSEC,NZMSEC,T3,T4,T5,KT3,KT4,KT5] = ...
             lh(out,'A','KA','T1','T2','KT1','KT2','NZYEAR','NZJDAY','NZHOUR','NZMIN','NZSEC','NZMSEC','T3','T4','T5','KT3','KT4','KT5');
@@ -100,4 +100,4 @@ for i = 1 : size(listesac,1)
     end
 end
 file = file(1:countline+1,:) ;
-disp(file)
+%disp(file)

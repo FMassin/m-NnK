@@ -21,9 +21,7 @@ list=[tmp1 tmp2];
 enriched(1:100,1:87,1:size(list,1))=' ';
 for i=1:size(list,1)
     leinp=list(i,list(i,:)~=' ');
-    [err,file]=system(['more ' leinp ]);
-    file=reshape(file,88,size(file,2)/88)';
-    file=file(:,1:87);
+    file=char(textread(leinp,'%s','delimiter','\n','whitespace',''));
     for ii=1:size(file,1)-1
        KSTNM=file(ii,2:5);
        [indKSTNM ,memKSTNM] =findandupdate(memKSTNM ,KSTNM) ;
@@ -100,7 +98,7 @@ for lay=1:size(enriched,3)
        system(['rm -rf ' filename]);
        dlmwrite(filename,event,'-append','delimiter','','newline',mycomputer)
 %       disp(event)
-       disp([filename ' written']);
+       disp(['Stack ' num2str(lay) ': stacked picked written']);
     end
 end
 

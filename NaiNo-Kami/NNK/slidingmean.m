@@ -17,7 +17,7 @@ tmp(size(IN,1)+avt+1:end,:) = repmat(IN(end,:),apr,1) ;
 
 IN = tmp ;
 OUT = IN ;
-OUT(1:avt+1,:) = repmat(mean(IN(avt+1:avt+apr+1,:),1),avt+1,1) ;
+OUT(1:avt+1,:) = repmat(nanmean(IN(avt+1:avt+apr+1,:),1),avt+1,1) ;
 
 INdivided = IN./fen ;
 for i = avt+2 : size(IN,1)-apr 
