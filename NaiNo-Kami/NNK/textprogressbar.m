@@ -15,7 +15,12 @@ if (seconds > 9),
 else
     timeremaining = [num2str(minutes) 'm 0' num2str(seconds) 's'];
 end
-progress_string = [progress_string ' - ' timeremaining ' remaining']; 
+
+if length(progress_string)+length(timeremaining)<52-13
+    progress_string = [progress_string ' - ' timeremaining ' remaining'];
+else
+    progress_string = ['|' timeremaining ' remaining - ' progress_string(15+length(timeremaining):end)] ;
+end 
 message= ['                     LAST NEWS                     ' text ];
 n=round(51*(1-((length(message)/51)-floor(length(message)/51))));
 spaces=repmat([' '],1,fix(n)) ;
