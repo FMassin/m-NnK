@@ -85,6 +85,7 @@ for j=1:size(station,1);for jj=1:size(compo,1);level='';for i=1:10; for jjj=1:si
  
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*sac.linux' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
+
                 test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*sac.linux' ])];
                 [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
                 test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' eve(jjj,:) '*' station(j,:) '*sac.linux' ])];
