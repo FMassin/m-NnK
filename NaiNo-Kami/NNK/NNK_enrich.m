@@ -49,8 +49,7 @@ for ev=1:size(Strwfs,1)
                                     Strdataless{ev,net,sta,cmp,pha}{17} = Strdataless{evref,net,sta,cmp,pha}{17}-memdiff(evref);
                                 end
                                 mem = evref ; 
-                            end
-                        end;end;
-                    end;
-end;end;end;end;end
+                            end;end;end;end;end;end;end;end;
+    disp(['Event ' num2str(ev) ': phases updated/checked'])
+end
 
