@@ -74,65 +74,47 @@ if length(option)>=12	;rminstr=option{12};end
 [B,A]=butter(filter{5},cell2mat(filter(1:2))/filter{3},filter{4}) ;
 data=cell(1,1,size(station,1),size(compo,1));dataless=data;
 memKNETWK='';memKSTNM ='';memKCMPNM='';memKEVNM ='';mempha='';memKpath='';
-delete('test.txt');
+delete('test.txt');memi=[1:10];extensions={'.sac.linux' '.sac' '.SAC'};memx=[1:numel(extensions)];memm=1:4;F=0;
 
 % list %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-disp(['Search ' path ' ' eve(1,:) ' ' reshape(station,1,numel(station)) ' ' reshape(compo,1,numel(compo))]);
-for j=1:size(station,1);for jj=1:size(compo,1);level='';for i=1:10; for jjj=1:size(eve,1);
-                test='';
+disp('Search in');disp(path);disp(eve);disp(station);disp(compo);
+for j=1:size(station,1);
+    for jj=1:size(compo,1);
+        for jjj=1:size(eve,1);
+        level='';
+            for i=memi; 
                 level=repmat('/*',1,i-1);
-                
- 
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' eve(jjj,:) '*' station(j,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' eve(jjj,:) '*' compo(jj,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' station(j,:) '*' eve(jjj,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' compo(jj,:) '*' eve(jjj,:) '*sac.linux' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' eve(jjj,:) '*' station(j,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' eve(jjj,:) '*' compo(jj,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' station(j,:) '*' eve(jjj,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' compo(jj,:) '*' eve(jjj,:) '*sac' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' compo(jj,:) '*' station(j,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' eve(jjj,:) '*' station(j,:) '*' compo(jj,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' eve(jjj,:) '*' station(j,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' eve(jjj,:) '*' compo(jj,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' compo(jj,:) '*' station(j,:) '*' eve(jjj,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);test='';
-                test=[test ' ' fullfile(path,level,['*' station(j,:) '*' compo(jj,:) '*' eve(jjj,:) '*SAC' ])];
-                [errorcode,poub]=system(['ls ' test ' >> test.txt']);
-
-%                 % no link in list
-%                 test=['ls -dl ' fullfile(path,level) ' | grep drwxr | awk ''{print "ls "$8"/' station(j,:) '*' compo(jj,:) '*sac.linux"}'' | sh' ];
-%                 [errorcode,poub]=system([ test ' >> test.txt']);
-%                 system('tail test.txt');
-                
-%                 test= ['ls -dl ' fullfile(path2dtb,'clst',level) ' | grep drwxr | awk ''{print "ls "$8"/' station(j,:) '*' compo(jj,:) '*.sac.linux"}'' | sh'];
-%                 [errorcode,poub]=system([ test ' >> test.txt']);
-%                 system('tail test.txt');
-              
-end;end;end;end
+                for x=memx;
+                    motif=[ '*' eve(jjj,:)   '*' station(j,:) '*' compo(jj,:)  '*' extensions{x} ;...
+                            '*' eve(jjj,:)   '*' compo(jj,:)  '*' station(j,:) '*' extensions{x} ;...
+                            '*' station(j,:) '*' compo(jj,:)  '*' eve(jjj,:)   '*' extensions{x} ;...
+                            '*' compo(jj,:)  '*' station(j,:) '*' eve(jjj,:)   '*' extensions{x} ];   
+                    for m=memm
+                        % % FOR UPGRADE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % % orphan in list
+                        %test=['ls -dl ' fullfile(path,level) ' | grep drwxr | awk ''{print "ls "$8"/' motif(m,:) '"}'' | sh' ];
+                        %[errorcode,poub]=system([ test ' >> test.txt']);
+                        % %system('tail test.txt');
+                        % % masters in list 
+                        %test=['ls -dl ' fullfile(path2dtb,'clst',level) ' | grep drwxr | awk ''{print "ls "$8"/' motif(m,:) '"}'' | sh'];
+                        %[errorcode,poub]=system([ test ' >> test.txt']);
+                        % %system('tail test.txt');
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        
+                        test= fullfile(path,level,motif(m,:));            
+                        [errorcode,~]=system(['ls ' test ' >> test.txt']);%[~,test]=system('cat test.txt')
+                        disp(['ls ' test ' >> test.txt 2> ' num2str(errorcode) ]);
+                        if errorcode==0;
+                            F=1;memi=i;memx=x;memm=m;break;
+                        end
+                    end;
+                    if F==1;break;end
+                end;
+                if F==1;break;end
+            end;
+        end;
+    end;
+end
 if exist('test.txt','file')==2
     c=dir('test.txt');
     if c.bytes > 0
@@ -150,7 +132,7 @@ if exist('test.txt','file')==2
             test2 = sum(cell2mat({testwhos.bytes}));
             if test1 < 2000000 & test2 < (11.8e+8-test1*10) & numel(findstr(done,file))==0  & numel(findstr(done,[file '-VEL']))==0 & exist(file,'file')==2
                 if rminstr==1;
-                   command = ['./make-RM-INSTR-macro.pl ' file ' ''' fullfile(path2dtb,'stat') '/SAC_PZs*'''];
+                   command = ['./NNK/make-RM-INSTR-macro.pl ' file ' ''' fullfile(path2dtb,'stat') '/SAC_PZs*'''];
                    if exist([file '-VEL'],'file')==2;disp(['rm-instr already done for ' file '-VEL'])
                    else;disp(command);system(command);end
                    file=[file '-VEL'];
@@ -175,7 +157,7 @@ if exist('test.txt','file')==2
                     % set pretty headers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     KNETWK=KNETWK(isspace(KNETWK)==0);
                     if strcmp(KNETWK,'-12345')==1|numel(KNETWK)==0;KNETWK=netcode;end
-                    [a,b]=system(['./Utils/perl/staname4NNK1.pl ' KSTNMEM ' 1 ' aliases]);message=[message '. ' KSTNMEM ' is aliased to ' b];
+                    [a,b]=system(['./Utils/staname4NNK1.pl ' KSTNMEM ' 1 ' aliases]);message=[message '. ' KSTNMEM ' is aliased to ' b];
                     KSTNM=b ;%KSTNMEM;%MEM;
                     KSTNM =KSTNM( isspace(KSTNM) ==0);
                     if strcmp(KSTNM,'-12345')==1|numel(KSTNM)==0;warning(['Defined KSTNM field in ' file]);end
