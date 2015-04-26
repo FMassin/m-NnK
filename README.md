@@ -18,7 +18,7 @@ NNK read an write [SAC files](http://www.iris.edu/KB/questions/13/SAC+file+forma
   * [A real time process for detection, clustering, and relocation of volcano-tectonic events at Piton de La Fournaise volcano](https://7061844195658084343-a-1802744773732722657-s-sites.googlegroups.com/site/fredmassin/download/2009_PosterAGU.jpg?attachauth=ANoY7crvSUNFPgFLMFsgbLM81k3wLSXzvvID7p0QGpwicA99zpOCOwJqh49UaWxIzLbptSMvcNugJ6JjtWEfryQ7jwtweCtEQO1t_pHoccMdYE-oAONlg4Kp1b6CgAHLXv_c43TL2udGtetLTqUJDSBZeW_TRcc5n7FZJ-r7j-squlZh5AZbvg5UqPfjPBX6-mk2Ss-aZx4VB-igB6aavZCpM8KGdjxGqA%3D%3D&attredirects=0). Massin, F.; Ferrazzini, V.; Bachelery, P.; Duputel, Z.. American Geophysical Union, Fall Meeting 2009, [abstract #V23D-2107](http://adsabs.harvard.edu/abs/2009AGUFM.V23D2107M).
 
 # Please ! #
-Show up on the  [golden book](https://github.com/FMassin/naino-kami/blob/wiki/Golden_book.md) when using NNK ! Email are strongly encouraged to request help before using these scripts. Contact [project owner](https://github.com/FMassin) :). Also, exploitation modules in other domains than seismology are welcomed (infrasound ?). Please request to be member to add your great work !
+Show up on the  [golden book](https://github.com/FMassin/naino-kami/blob/wiki/Golden_book.md) when using NNK ! Email are strongly encouraged to request help before using these scripts. Contact [project owner](https://github.com/FMassin) :). Also, exploitation modules in other domains than seismology are welcomed (infrasound ?).
 
 
 #[Project owner](http://fredmassin.blogspot.fr/)
